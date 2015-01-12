@@ -1,4 +1,4 @@
-package com.example.thornhil_travelexpenses;
+package cmput301.thornhil_travelexpenses;
 
 import android.app.Activity;
 import android.os.Bundle;
