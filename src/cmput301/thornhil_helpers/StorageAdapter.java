@@ -16,7 +16,7 @@ public class StorageAdapter {
 	private StorageHelper storageHelper;
 	
 	public StorageAdapter(Context context){
-		storageHelper = new StorageHelper(context);
+		storageHelper = storageHelper.getInstance(context);
 	}
 	
 	public void storeAllTrips(Iterable<Trip> trips) throws IOException{

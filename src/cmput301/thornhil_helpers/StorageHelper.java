@@ -27,7 +27,7 @@ public class StorageHelper {
 	private final static String tripsFile = "TripsStorage.txt";
 	private final static String expensesFile = "ExpensesStorage.txt";
 	
-	protected StorageHelper(Context context){
+	private StorageHelper(Context context){
 		this.context = context;
 	}
 	
