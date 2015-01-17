@@ -10,8 +10,6 @@ import java.util.Hashtable;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-
 import cmput301.thornhil_helpers.StorageHelper;
 
 
@@ -25,7 +23,7 @@ public class Cache
 	private Hashtable<Integer, Trip> trips;
 	private Hashtable<Integer, Expense> expenses;
 	private StorageHelper storageHelper;
-	private Gson gson = new Gson();
+
 	
 	
 	public Cache(Context context)
