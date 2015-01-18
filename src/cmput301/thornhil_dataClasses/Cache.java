@@ -10,6 +10,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import cmput301.thornhil_helpers.StorageAdapter;
 import cmput301.thornhil_helpers.StorageHelper;
 
@@ -21,21 +22,25 @@ public class Cache
 		public DataItem parseData(BufferedReader reader);
 	}
 	
-	private Hashtable<Integer, Trip> trips;
-	private Hashtable<Integer, Expense> expenses;
+	private Hashtable<Integer, Claim> claims = new Hashtable<Integer, Claim>();
+	private Hashtable<Integer, Expense> expenses = new Hashtable<Integer, Expense>();
 	private StorageAdapter storageAdapter;
-
 	
-	
-	public Cache(Context context) throws IOException
+	public Cache(Context context)
 	{
 		storageAdapter = new StorageAdapter(context);
-		getAllDataFromStorage();
+		try {
+			getAllDataFromStorage();
+		} catch (FileNotFoundException e){
+			Log.d("Error", "Opening cache, could not find storage File");
+		} catch (IOException e){
+			Log.d("Error", "Opening cache, IO Exception");
+		}
 	}
 
-	public void addNewTrip(Trip trip) throws IOException{
-		addTrip(trip);
-		writeTrips();
+	public void addNewClaim(Claim claim) throws IOException{
+		addClaim(claim);
+		writeClaims();
 	}
 	
 	public void addNewExpense(Expense expense) throws IOException{
@@ -43,18 +48,18 @@ public class Cache
 		writeExpenses();
 	}
 	
-	public Iterable<Trip> getAllTrips(){
-		return trips.values();
+	public Iterable<Claim> getAllClaims(){
+		return claims.values();
 	}
 	
 	public Iterable<Expense> getAllExpenses(){
 		return expenses.values();
 	}
 	
-	public void deleteTrip(Integer ID) throws IOException{
-		trips.remove(ID);
+	public void deleteClaim(Integer ID) throws IOException{
+		claims.remove(ID);
 		for (Expense e : getAllExpenses()){
-			if (e.getTripId() == ID){
+			if (e.getClaimId() == ID){
 				expenses.remove(e.getId());
 			}
 		}
@@ -66,10 +71,10 @@ public class Cache
 		writeExpenses();
 	}
 	
-	public void editTrip(Trip t) throws IOException{
-		trips.remove(t.getId());
-		addTrip(t);
-		writeTrips();
+	public void editClaim(Claim t) throws IOException{
+		claims.remove(t.getId());
+		addClaim(t);
+		writeClaims();
 	}
 	
 	public void editExpense(Expense e) throws IOException{
@@ -82,18 +87,18 @@ public class Cache
 		expenses.put(e.getId(), e);
 	}
 
-	private void addTrip (Trip t){
-		trips.put(t.getId(), t);
+	private void addClaim (Claim t){
+		claims.put(t.getId(), t);
 	}
 	
 	private void getAllDataFromStorage() throws IOException{
-		getTripsFromStorage();
+		getClaimsFromStorage();
 		getExpensesFromStorage();
 	}
 	
-	private void getTripsFromStorage() throws IOException{
-		for (Trip t : storageAdapter.getAllTrips()){
-			addTrip(t);
+	private void getClaimsFromStorage() throws IOException{
+		for (Claim t : storageAdapter.getAllClaims()){
+			addClaim(t);
 		}
 	}
 	
@@ -103,8 +108,8 @@ public class Cache
 		}
 	}
 	
-	private void writeTrips() throws IOException{
-		storageAdapter.storeAllTrips(getAllTrips());
+	private void writeClaims() throws IOException{
+		storageAdapter.storeAllClaims(getAllClaims());
 	}
 	
 	private void writeExpenses() throws IOException{
@@ -112,7 +117,7 @@ public class Cache
 	}
 	
 	private void writeAllData() throws IOException{
-		writeTrips();
+		writeClaims();
 		writeExpenses();
 	}
 	

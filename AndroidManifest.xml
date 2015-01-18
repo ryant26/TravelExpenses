@@ -8,11 +8,16 @@
         android:minSdkVersion="17"
         android:targetSdkVersion="17" />
     
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+    android:targetPackage="cmput301.tests"
+    android:label="your tests label" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <uses-library android:name="android.test.runner" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >

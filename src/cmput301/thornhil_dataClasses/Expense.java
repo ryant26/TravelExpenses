@@ -5,13 +5,13 @@ import java.util.*;
 public class Expense extends DataItem {
 	private Integer ammount;
 	private Currency currency;
-	private Integer tripId;
+	private Integer claimId;
 	
-	public Expense(String name, Integer amt, Currency currency, Integer trip, Integer id){
+	public Expense(String name, Integer amt, Currency currency, Integer claim, Integer id){
 		super(name, id);
 		setAmmount(amt);
 		setCurrency(currency);
-		setTripId(trip);
+		setClaimId(claim);
 	}
 	
 	public Integer getAmmount() {
@@ -26,11 +26,11 @@ public class Expense extends DataItem {
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
-	public Integer getTripId() {
-		return tripId;
+	public Integer getClaimId() {
+		return claimId;
 	}
-	public void setTripId(Integer trip) {
-		this.tripId = trip;
+	public void setClaimId(Integer claim) {
+		this.claimId = claim;
 	}
 	
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import android.content.Context;
 import cmput301.thornhil_dataClasses.DataItem;
 import cmput301.thornhil_dataClasses.Expense;
-import cmput301.thornhil_dataClasses.Trip;
+import cmput301.thornhil_dataClasses.Claim;
 
 import com.google.gson.*;
 
@@ -19,16 +19,16 @@ public class StorageAdapter {
 		storageHelper = storageHelper.getInstance(context);
 	}
 	
-	public void storeAllTrips(Iterable<Trip> trips) throws IOException{
-		storageHelper.storeAllTrips(toJson(trips));
+	public void storeAllClaims(Iterable<Claim> claims) throws IOException{
+		storageHelper.storeAllClaims(toJson(claims));
 	}
 	
 	public void storeAllExpenses(Iterable<Expense> expenses) throws IOException{
 		storageHelper.storeAllExpenses(toJson(expenses));
 	}
 	
-	public List<Trip> getAllTrips() throws IOException{
-		return toDataItem(storageHelper.getAllTrips(), Trip.class);
+	public List<Claim> getAllClaims() throws IOException{
+		return toDataItem(storageHelper.getAllClaims(), Claim.class);
 	}
 	
 	public List <Expense> getAllExpenses() throws IOException{

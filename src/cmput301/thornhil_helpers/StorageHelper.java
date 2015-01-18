@@ -24,7 +24,7 @@ import android.provider.SyncStateContract.Constants;
 public class StorageHelper {
 	private static StorageHelper instance = null;
 	private Context context;
-	private final static String tripsFile = "TripsStorage.txt";
+	private final static String claimsFile = "ClaimsStorage.txt";
 	private final static String expensesFile = "ExpensesStorage.txt";
 	
 	private StorageHelper(Context context){
@@ -38,9 +38,9 @@ public class StorageHelper {
 		return instance;
 	}
 	
-	public void storeAllTrips(Iterable<String> trips) throws FileNotFoundException, IOException{
-		BufferedWriter writer = openTripsStorageForWriting();
-		writeStrings(writer, trips);
+	public void storeAllClaims(Iterable<String> claims) throws FileNotFoundException, IOException{
+		BufferedWriter writer = openClaimsStorageForWriting();
+		writeStrings(writer, claims);
 		writer.close();
 	}
 	
@@ -50,8 +50,8 @@ public class StorageHelper {
 		writer.close();
 	}
 	
-	public List<String> getAllTrips() throws FileNotFoundException, IOException{
-		BufferedReader reader = openTripsStorageForReading();
+	public List<String> getAllClaims() throws FileNotFoundException, IOException{
+		BufferedReader reader = openClaimsStorageForReading();
 		List<String> output = getData(reader);
 		reader.close();
 		return output;
@@ -79,16 +79,16 @@ public class StorageHelper {
 		}
 	}
 	
-	private BufferedWriter openTripsStorageForWriting() throws FileNotFoundException{
-		return openStorageForWriting(tripsFile);
+	private BufferedWriter openClaimsStorageForWriting() throws FileNotFoundException{
+		return openStorageForWriting(claimsFile);
 	}
 	
 	private BufferedWriter openExpenseStorageforWriting() throws FileNotFoundException{
 		return openStorageForWriting(expensesFile);
 	}
 	
-	private BufferedReader openTripsStorageForReading() throws FileNotFoundException{
-		return openStorageForReading(tripsFile);
+	private BufferedReader openClaimsStorageForReading() throws FileNotFoundException{
+		return openStorageForReading(claimsFile);
 	}
 	
 	private BufferedReader openExpensesStorageForReading() throws FileNotFoundException{
