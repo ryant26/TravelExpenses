@@ -1,9 +1,25 @@
 package cmput301.thornhil_travelexpenses;
 
+import java.util.ArrayList;
+
+import cmput301.thornhil_dataClasses.Cache;
+import cmput301.thornhil_dataClasses.Claim;
+import cmput301.thornhil_dataClasses.DataItem;
+import android.R.anim;
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -14,25 +30,81 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
+        
+        Cache dataCache = new Cache(getApplicationContext());
+        ClaimAdapter adapter = new ClaimAdapter(this, R.layout.claim_row_layout, dataCache);
+        ListView listView = (ListView) findViewById(R.id.Claims_List_View);
+        listView.setAdapter(adapter);
+        
+        listView.setEmptyView((TextView) findViewById(android.R.id.empty));	
+        //TODO Set a click listner!
+        
+        
     }
-
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.main, menu);
+    	return super.onCreateOptionsMenu(menu);
+    };
+    
+    private class ClaimAdapter extends BaseAdapter{
+    	
+    	private Cache cache;
+    	private Context context;
+    	
+		public ClaimAdapter(Context context, int textViewResourceId, Cache cache) {
+			this.context = context;
+			this.cache = cache;
+		}
+		
+		@Override
+		public int getCount() {
+			return cache.getAllClaims().size();
+		};
+		
+		@Override
+		public Claim getItem(int position){
+			return (Claim) cache.getAllClaims().toArray()[position];
+		}
+		
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+		
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent){
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+			View rowView = null;
+			Claim item = getItem(position);
+			
+			if ( convertView == null){
+				rowView = inflater.inflate(R.layout.claim_row_layout, parent);
+			} else {
+				rowView = convertView;
+			}
+			
+			return formatView(rowView, item);
+		}
+		
+		public View formatView(View rowView, Claim item){
+			((TextView) rowView.findViewById(R.id.Name)).setText(item.getName());
+			((TextView) rowView.findViewById(R.id.Status)).setText(item.getStatusString());
+			((TextView) rowView.findViewById(R.id.date)).setText(item.getDate().toString());
+			
+			switch (item.getStatus()) {
+			case approved:
+				rowView.setBackgroundColor(Color.DKGRAY);
+				break;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+			default:
+				break;
+			}
+			
+			return rowView;
+		}
+    	
     }
 }

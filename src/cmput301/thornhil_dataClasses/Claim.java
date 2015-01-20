@@ -11,6 +11,21 @@ public class Claim extends DataItem{
 	public ClaimStatus getStatus() {
 		return status;
 	}
+	
+	public String getStatusString(){
+		switch (status) {
+		case submitted:
+			return "submitted";
+		case accepted:
+			return "Accepted";
+		case approved:
+			return "Approved";
+		case open:
+			return "open";
+		default:
+			return "";
+		}
+	}
 
 	public void setStatus(ClaimStatus status) {
 		this.status = status;

@@ -4,5 +4,6 @@
     <string name="app_name">thornhil-TravelExpenses</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="no_claims">Add Claims with + Symbol</string>
 
 </resources>

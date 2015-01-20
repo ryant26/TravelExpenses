@@ -1,10 +1,13 @@
 package cmput301.thornhil_dataClasses;
 
+import java.util.Date;
+
 import com.google.gson.Gson;
 
 public class DataItem {
 	private String name;
 	private Integer id;
+	private Date date;
 	
 	public DataItem(String name, Integer id){
 		setId(id);
@@ -29,6 +32,14 @@ public class DataItem {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 	

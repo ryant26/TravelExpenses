@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class Cache
 		writeExpenses();
 	}
 	
-	public Iterable<Claim> getAllClaims(){
+	public Collection<Claim> getAllClaims(){
 		return claims.values();
 	}
 	
