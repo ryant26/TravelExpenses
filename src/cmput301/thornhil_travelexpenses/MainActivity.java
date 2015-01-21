@@ -1,11 +1,8 @@
 package cmput301.thornhil_travelexpenses;
 
-import java.util.ArrayList;
 
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
-import cmput301.thornhil_dataClasses.DataItem;
-import android.R.anim;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -13,11 +10,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,9 +33,6 @@ public class MainActivity extends Activity {
         listView.setAdapter(adapter);
         
         listView.setEmptyView((TextView) findViewById(android.R.id.empty));	
-        //TODO Set a click listner!
-        
-        
     }
     
     @Override
@@ -47,6 +40,14 @@ public class MainActivity extends Activity {
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.main, menu);
     	return super.onCreateOptionsMenu(menu);
+    };
+    
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+    	if (item.getItemId() == R.id.add_claim){
+    		//TODO bring up "add claim activity"
+    	}
+    	return super.onOptionsItemSelected(item);
     };
     
     private class ClaimAdapter extends BaseAdapter{
