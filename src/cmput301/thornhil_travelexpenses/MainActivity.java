@@ -3,6 +3,7 @@ package cmput301.thornhil_travelexpenses;
 
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
+import cmput301.thornhil_travelexpenses.CreateClaimFragment.OnClaimCreatedListener;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -18,8 +19,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-public class MainActivity extends Activity {
-
+public class MainActivity extends Activity implements OnClaimCreatedListener{
+	
+	private ClaimAdapter adapter;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +31,7 @@ public class MainActivity extends Activity {
         getActionBar().setDisplayShowHomeEnabled(false);
         
         Cache dataCache = new Cache(getApplicationContext());
-        ClaimAdapter adapter = new ClaimAdapter(this, R.layout.claim_row_layout, dataCache);
+        adapter = new ClaimAdapter(this, R.layout.claim_row_layout, dataCache);
         ListView listView = (ListView) findViewById(R.id.Claims_List_View);
         listView.setAdapter(adapter);
         
@@ -48,6 +51,11 @@ public class MainActivity extends Activity {
     		//TODO bring up "add claim activity"
     	}
     	return super.onOptionsItemSelected(item);
+    };
+    
+    @Override
+    public void onClaimCreated(Claim claim) {
+    	
     };
     
     private class ClaimAdapter extends BaseAdapter{
