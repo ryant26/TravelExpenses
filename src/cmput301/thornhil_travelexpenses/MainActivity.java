@@ -90,7 +90,7 @@ public class MainActivity extends Activity implements OnClaimCreatedListener{
 			Claim item = getItem(position);
 			
 			if ( convertView == null){
-				rowView = inflater.inflate(R.layout.claim_row_layout, parent);
+				rowView = inflater.inflate(R.layout.claim_row_layout, parent, false);
 			} else {
 				rowView = convertView;
 			}

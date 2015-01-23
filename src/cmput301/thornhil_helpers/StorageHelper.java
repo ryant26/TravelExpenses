@@ -1,7 +1,5 @@
 package cmput301.thornhil_helpers;
 
-import java.io.Closeable;
-import java.io.File;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,17 +7,11 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.InvalidObjectException;
 import java.io.OutputStreamWriter;
-import java.io.WriteAbortedException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.*;
-
-import android.*;
 import android.content.Context;
-import android.provider.SyncStateContract.Constants;
 
 public class StorageHelper {
 	private static StorageHelper instance = null;
