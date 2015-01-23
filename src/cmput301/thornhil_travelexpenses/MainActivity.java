@@ -1,15 +1,19 @@
 package cmput301.thornhil_travelexpenses;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
 import cmput301.thornhil_dataClasses.DataItem;
+import cmput301.thornhil_helpers.StorageAdapter;
 import android.R.anim;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,14 +34,22 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         //getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
-        
-        Cache dataCache = new Cache(getApplicationContext());
+        Cache dataCache = null;
+        try{
+        dataCache = new StorageAdapter(getApplicationContext()).getCacheFromFile();
+        } catch (FileNotFoundException e){
+        	Log.d("error", "Cannot initialize Cache!!!!!!!!!");
+        	dataCache = new Cache(getApplicationContext());
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         ClaimAdapter adapter = new ClaimAdapter(this, R.layout.claim_row_layout, dataCache);
         ListView listView = (ListView) findViewById(R.id.Claims_List_View);
         listView.setAdapter(adapter);
         
         listView.setEmptyView((TextView) findViewById(android.R.id.empty));	
-        //TODO Set a click listner!
+        
         
         
     }

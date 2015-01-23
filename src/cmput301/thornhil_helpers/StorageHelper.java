@@ -1,34 +1,42 @@
 package cmput301.thornhil_helpers;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.InvalidObjectException;
 import java.io.OutputStreamWriter;
-import java.io.WriteAbortedException;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Type;
+
+import cmput301.thornhil_dataClasses.Cache;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 
-import android.*;
 import android.content.Context;
-import android.provider.SyncStateContract.Constants;
 
 public class StorageHelper {
 	private static StorageHelper instance = null;
 	private Context context;
+	private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 	private final static String claimsFile = "ClaimsStorage.txt";
 	private final static String expensesFile = "ExpensesStorage.txt";
+	private final static String cacheFile = "CacheStorage.txt";
 	
 	private StorageHelper(Context context){
 		this.context = context;
+	}
+	
+	public void testStoreCache(Cache cache) throws IOException{
+		OutputStreamWriter osw = new OutputStreamWriter(context.openFileOutput(cacheFile, 0));
+		gson.toJson(cache, osw);
+		osw.flush();
+		osw.close();
+	}
+	
+	public Cache testReadCache() throws IOException{
+		Type type = new TypeToken<Cache>(){}.getType();
+		InputStreamReader reader = new InputStreamReader(context.openFileInput(cacheFile));
+		Cache ret =  gson.fromJson(reader, type);
+		reader.close();
+		return ret;
 	}
 	
 	public static StorageHelper getInstance(Context context){
@@ -37,7 +45,7 @@ public class StorageHelper {
 		}
 		return instance;
 	}
-	
+	/*
 	public void storeAllClaims(Iterable<String> claims) throws FileNotFoundException, IOException{
 		BufferedWriter writer = openClaimsStorageForWriting();
 		writeStrings(writer, claims);
@@ -104,4 +112,5 @@ public class StorageHelper {
 		FileOutputStream fos = context.openFileOutput(name, Context.MODE_PRIVATE);
 		return new BufferedWriter(new OutputStreamWriter(fos));
 	}
+	*/
 }

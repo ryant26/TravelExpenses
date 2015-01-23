@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 
+import com.google.gson.annotations.Expose;
+
 import android.content.Context;
 import android.util.Log;
 import cmput301.thornhil_helpers.StorageAdapter;
@@ -22,9 +24,12 @@ public class Cache
 	private interface DataPaser{
 		public DataItem parseData(BufferedReader reader);
 	}
-	
+	@Expose
 	private Hashtable<Integer, Claim> claims = new Hashtable<Integer, Claim>();
+	@Expose
 	private Hashtable<Integer, Expense> expenses = new Hashtable<Integer, Expense>();
+	
+	
 	private StorageAdapter storageAdapter;
 	
 	public Cache(Context context)
@@ -41,12 +46,12 @@ public class Cache
 
 	public void addNewClaim(Claim claim) throws IOException{
 		addClaim(claim);
-		writeClaims();
+		storageAdapter.storeCacheToFile(this);
 	}
 	
 	public void addNewExpense(Expense expense) throws IOException{
 		addExpense(expense);
-		writeExpenses();
+		storageAdapter.storeCacheToFile(this);
 	}
 	
 	public Collection<Claim> getAllClaims(){
@@ -64,24 +69,24 @@ public class Cache
 				expenses.remove(e.getId());
 			}
 		}
-		writeAllData();
+		storageAdapter.storeCacheToFile(this);
 	}
 	
 	public void deleteExpense(Integer ID) throws IOException{
 		expenses.remove(ID);
-		writeExpenses();
+		storageAdapter.storeCacheToFile(this);
 	}
 	
 	public void editClaim(Claim t) throws IOException{
 		claims.remove(t.getId());
 		addClaim(t);
-		writeClaims();
+		storageAdapter.storeCacheToFile(this);
 	}
 	
 	public void editExpense(Expense e) throws IOException{
 		expenses.remove(e.getId());
 		addExpense(e);
-		writeExpenses();
+		storageAdapter.storeCacheToFile(this);
 	}
 	
 	private void addExpense(Expense e){
@@ -93,10 +98,9 @@ public class Cache
 	}
 	
 	private void getAllDataFromStorage() throws IOException{
-		getClaimsFromStorage();
-		getExpensesFromStorage();
+		
 	}
-	
+	/*
 	private void getClaimsFromStorage() throws IOException{
 		for (Claim t : storageAdapter.getAllClaims()){
 			addClaim(t);
@@ -121,5 +125,5 @@ public class Cache
 		writeClaims();
 		writeExpenses();
 	}
-	
+	*/
 }
