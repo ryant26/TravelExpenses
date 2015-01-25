@@ -1,10 +1,15 @@
 package cmput301.thornhil_travelexpenses;
 
 
+import java.io.IOException;
+
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
-import cmput301.thornhil_travelexpenses.CreateClaimFragment.OnClaimCreatedListener;
+import cmput301.thornhil_travelexpenses.ClaimEditorFragment.ClaimChangeListener;
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,12 +19,11 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
-public class MainActivity extends Activity implements OnClaimCreatedListener{
+public class MainActivity extends Activity implements ClaimChangeListener { 
 	
 	private ClaimAdapter adapter;
 	
@@ -27,8 +31,8 @@ public class MainActivity extends Activity implements OnClaimCreatedListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
+        
         
         Cache dataCache = new Cache(getApplicationContext());
         adapter = new ClaimAdapter(this, R.layout.claim_row_layout, dataCache);
@@ -36,6 +40,21 @@ public class MainActivity extends Activity implements OnClaimCreatedListener{
         listView.setAdapter(adapter);
         
         listView.setEmptyView((TextView) findViewById(android.R.id.empty));	
+        
+        getFragmentManager().addOnBackStackChangedListener(new OnBackStackChangedListener() {
+			
+			@Override
+			public void onBackStackChanged() {
+				int stackSize = getFragmentManager().getBackStackEntryCount();
+				if (stackSize > 0){
+					getActionBar().setDisplayShowHomeEnabled(true);
+					getActionBar().setDisplayHomeAsUpEnabled(true);
+				} else {
+					getActionBar().setDisplayShowHomeEnabled(false);
+					getActionBar().setDisplayHomeAsUpEnabled(false);
+				}
+			}
+		});
     }
     
     @Override
@@ -47,16 +66,39 @@ public class MainActivity extends Activity implements OnClaimCreatedListener{
     
     @Override
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
-    	if (item.getItemId() == R.id.add_claim){
-    		//TODO bring up "add claim activity"
+    	switch (item.getItemId()) {
+    	   case android.R.id.home:
+    		   FragmentManager fm = getFragmentManager();
+    		   if (fm.getBackStackEntryCount() > 0){
+    			   fm.popBackStack();
+    		   }
+    	       break;
+    	   case R.id.add_claim:
+			   openAddClaimFrag();
+			   break;
+    	    default:
+    	       break;
     	}
+    	
     	return super.onOptionsItemSelected(item);
-    };
+    }
     
     @Override
-    public void onClaimCreated(Claim claim) {
+    public void dataItemChanged(Claim item) {};
+    
+    @Override
+    public void dataItemCreated(Claim item) {
+    	// TODO Auto-generated method stub
     	
-    };
+    }
+    
+    private void openAddClaimFrag() {
+    	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		ClaimEditorFragment fragment = new ClaimEditorFragment();
+		fragmentTransaction.add(R.id.main_activity_frame_layout, fragment, "Add Claim");
+		fragmentTransaction.addToBackStack(null);
+		fragmentTransaction.commit();
+    }
     
     private class ClaimAdapter extends BaseAdapter{
     	
@@ -98,9 +140,15 @@ public class MainActivity extends Activity implements OnClaimCreatedListener{
 			return formatView(rowView, item);
 		}
 		
+		public void addClaim(Claim claim) throws IOException{
+			cache.addNewClaim(claim);
+			notifyDataSetChanged();
+		}
+		
+		
 		public View formatView(View rowView, Claim item){
 			((TextView) rowView.findViewById(R.id.Name)).setText(item.getName());
-			((TextView) rowView.findViewById(R.id.Status)).setText(item.getStatusString());
+			((TextView) rowView.findViewById(R.id.Status)).setText("Status: " + item.getStatusString());
 			((TextView) rowView.findViewById(R.id.date)).setText(item.getDate().toString());
 			
 			switch (item.getStatus()) {

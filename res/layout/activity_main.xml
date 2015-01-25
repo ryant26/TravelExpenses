@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
-     xmlns:android="http://schemas.android.com/apk/res/android"
- 		xmlns:tools="http://schemas.android.com/tools"
- 	 android:id="@+id/main_activity_Linear_Layout"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     android:layout_alignParentBottom="true"
-     android:layout_alignParentLeft="true"
-     android:layout_alignParentRight="true"
-     android:layout_alignParentTop="true"
-     android:orientation="vertical" >
-
-    <ListView 
-        android:id="@+id/Claims_List_View"
-        android:layout_width="match_parent"
-	     android:layout_height="match_parent"/>
-       
-    <TextView 
-        android:id="@android:id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/no_claims"/>
- </LinearLayout>
-
+<FrameLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	 		xmlns:tools="http://schemas.android.com/tools"
+	 android:id="@+id/main_activity_frame_layout"
+	 android:layout_width="match_parent"
+	 android:layout_height="match_parent">
+	 
+	<LinearLayout
+	     
+	 	 android:id="@+id/main_activity_Linear_Layout"
+	     android:layout_width="match_parent"
+	     android:layout_height="match_parent"
+	     android:layout_alignParentBottom="true"
+	     android:layout_alignParentLeft="true"
+	     android:layout_alignParentRight="true"
+	     android:layout_alignParentTop="true"
+	     android:orientation="vertical" >
+	
+	    <ListView 
+	        android:id="@+id/Claims_List_View"
+	        android:layout_width="match_parent"
+		     android:layout_height="match_parent"/>
+	       
+	    <TextView 
+	        android:id="@android:id/empty"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:gravity="center"
+	        android:text="@string/no_claims"/>
+	 </LinearLayout>
+	 
+</FrameLayout>

@@ -9,11 +9,13 @@ public class DataItem {
 	private Integer id;
 	private Date date;
 	
-	public DataItem(String name, Integer id, Date date){
-		setId(id);
+	public DataItem(String name, Date date){
 		setName(name);
 		setDate(date);
+		id = this.hashCode();
 	}
+	
+	public DataItem(){};
 	
 	public Integer getId() {
 		return id;
