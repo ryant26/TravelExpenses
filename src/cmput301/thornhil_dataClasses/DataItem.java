@@ -9,9 +9,10 @@ public class DataItem {
 	private Integer id;
 	private Date date;
 	
-	public DataItem(String name, Integer id){
+	public DataItem(String name, Integer id, Date date){
 		setId(id);
 		setName(name);
+		setDate(date);
 	}
 	
 	public Integer getId() {

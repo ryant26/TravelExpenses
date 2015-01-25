@@ -7,8 +7,8 @@ public class Expense extends DataItem {
 	private Currency currency;
 	private Integer claimId;
 	
-	public Expense(String name, Integer amt, Currency currency, Integer claim, Integer id){
-		super(name, id);
+	public Expense(String name, Integer amt, Currency currency, Integer claim, Integer id, Date date){
+		super(name, id, date);
 		setAmmount(amt);
 		setCurrency(currency);
 		setClaimId(claim);
