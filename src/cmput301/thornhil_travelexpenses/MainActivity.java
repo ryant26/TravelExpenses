@@ -68,10 +68,7 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
     	switch (item.getItemId()) {
     	   case android.R.id.home:
-    		   FragmentManager fm = getFragmentManager();
-    		   if (fm.getBackStackEntryCount() > 0){
-    			   fm.popBackStack();
-    		   }
+    		   popFragment();
     	       break;
     	   case R.id.add_claim:
 			   openAddClaimFrag();
@@ -98,6 +95,13 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 		fragmentTransaction.add(R.id.main_activity_frame_layout, fragment, "Add Claim");
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
+    }
+    
+    private void popFragment(){
+    	FragmentManager fm = getFragmentManager();
+    	if (fm.getBackStackEntryCount() > 0){
+    		fm.popBackStack();
+    	}
     }
     
     private class ClaimAdapter extends BaseAdapter{
