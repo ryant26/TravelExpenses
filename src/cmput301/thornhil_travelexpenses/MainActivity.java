@@ -2,9 +2,11 @@ package cmput301.thornhil_travelexpenses;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
+import cmput301.thornhil_helpers.MultiSelectListener;
 import cmput301.thornhil_travelexpenses.ClaimEditorFragment.ClaimChangeListener;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -84,6 +86,12 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     	}
     }
     
+    @Override
+	public void dataItemsDeleted(ArrayList<Claim> items) {
+		// TODO Auto-generated method stub
+		
+	}
+    
     private void openAddClaimFrag(Claim claim) {
     	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
     	ClaimEditorFragment fragment;
@@ -133,6 +141,8 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 			
 		});
 		
+		listView.setMultiChoiceModeListener(new MultiSelectListener<Claim>(this));
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);		
     }
     
     private class ClaimAdapter extends BaseAdapter{
@@ -199,4 +209,5 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 		}
     	
     }
+
 }
