@@ -107,6 +107,16 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 		fragmentTransaction.commit();
     }
     
+    private void openClaimInfoFrag(Claim claim){
+    	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+    	ClaimInfoFragment fragment = new ClaimInfoFragment(claim);
+    	
+    	fragmentTransaction.add(R.id.main_activity_frame_layout, fragment, "Add Claim");
+		fragmentTransaction.addToBackStack(null);
+		fragmentTransaction.commit();
+    	
+    }
+    
     private void popFragment(){
     	FragmentManager fm = getFragmentManager();
     	if (fm.getBackStackEntryCount() > 0){
@@ -136,7 +146,7 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				openAddClaimFrag(adapter.getItem(position));
+				openClaimInfoFrag(adapter.getItem(position));
 			}
 			
 		});

@@ -11,5 +11,14 @@
     <string name="to_date">To:</string>
     <string name="Save">Save</string>
     <string name="save">Save</string>
+    <string name="status">Status:</string>
+    <string-array name="Status_Spinner">
+        <item>Open</item>
+        <item>Accepted</item>
+        <item>Submitted</item>
+        <item>Approved</item>
+    </string-array>
+    <string name="add_edit_expenses">Add / Edit Expenses</string>
+    <string name="edit">edit</string>
 
 </resources>
