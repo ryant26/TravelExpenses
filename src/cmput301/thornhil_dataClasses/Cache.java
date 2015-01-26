@@ -84,6 +84,11 @@ public class Cache
 		writeExpenses();
 	}
 	
+	public void writeAllData() throws IOException{
+		writeClaims();
+		writeExpenses();
+	}
+	
 	private void addExpense(Expense e){
 		expenses.put(e.getId(), e);
 	}
@@ -117,9 +122,6 @@ public class Cache
 		storageAdapter.storeAllExpenses(getAllExpenses());
 	}
 	
-	private void writeAllData() throws IOException{
-		writeClaims();
-		writeExpenses();
-	}
+	
 	
 }

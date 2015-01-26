@@ -75,6 +75,7 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     @Override
     public void dataItemChanged(Claim item) {
     	adapter.notifyDataSetChanged();
+    	adapter.forceSaveData();
     };
     
     @Override
@@ -183,6 +184,14 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 			}
 			
 			return formatView(rowView, item);
+		}
+		
+		public void forceSaveData(){
+			try{
+				cache.writeAllData();
+			} catch (Exception e){
+				Log.d("error", "Force write data, failed!");
+			}
 		}
 		
 		public void addClaim(Claim claim) throws IOException{
