@@ -77,10 +77,11 @@ public class ClaimEditorFragment extends Fragment
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		getAllFields();
+		
 		switch (item.getItemId()) {
 		case R.id.save_claim:
 			if (newClaim){
-				getAllFields();
 				claimListener.dataItemCreated(claim);
 			} else {
 				claimListener.dataItemChanged(claim);
@@ -98,7 +99,9 @@ public class ClaimEditorFragment extends Fragment
 		Date eDate = new Date(endDate.getYear(), endDate.getMonth(), endDate.getDayOfMonth());
 		String name = claimNameEditor.getText().toString();
 		
-		claim = new Claim(name, sDate, eDate);
+		claim.setDate(sDate);
+		claim.setEndDate(eDate);
+		claim.setName(name);
 	}
 	
 }

@@ -19,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,28 +36,13 @@ public class MainActivity extends Activity implements ClaimChangeListener {
         setContentView(R.layout.activity_main);
         getActionBar().setDisplayShowHomeEnabled(false);
         
-        
         Cache dataCache = new Cache(getApplicationContext());
         adapter = new ClaimAdapter(this, R.layout.claim_row_layout, dataCache);
         ListView listView = (ListView) findViewById(R.id.Claims_List_View);
         listView.setAdapter(adapter);
-        
         listView.setEmptyView((TextView) findViewById(android.R.id.empty));	
+        setupListeners();
         
-        getFragmentManager().addOnBackStackChangedListener(new OnBackStackChangedListener() {
-			
-			@Override
-			public void onBackStackChanged() {
-				int stackSize = getFragmentManager().getBackStackEntryCount();
-				if (stackSize > 0){
-					getActionBar().setDisplayShowHomeEnabled(true);
-					getActionBar().setDisplayHomeAsUpEnabled(true);
-				} else {
-					getActionBar().setDisplayShowHomeEnabled(false);
-					getActionBar().setDisplayHomeAsUpEnabled(false);
-				}
-			}
-		});
     }
     
     @Override
@@ -74,7 +61,7 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     		   popFragment();
     	       break;
     	   case R.id.add_claim:
-			   openAddClaimFrag();
+			   openAddClaimFrag(null);
 			   break;
     	    default:
     	       break;
@@ -97,9 +84,16 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     	}
     }
     
-    private void openAddClaimFrag() {
+    private void openAddClaimFrag(Claim claim) {
     	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-		ClaimEditorFragment fragment = new ClaimEditorFragment();
+    	ClaimEditorFragment fragment;
+    	
+    	if (claim == null) {
+    		fragment = new ClaimEditorFragment();
+    	} else {
+    		fragment = new ClaimEditorFragment(claim);
+    	}
+    	
 		fragmentTransaction.add(R.id.main_activity_frame_layout, fragment, "Add Claim");
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
@@ -110,6 +104,35 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     	if (fm.getBackStackEntryCount() > 0){
     		fm.popBackStack();
     	}
+    }
+    
+    private void setupListeners(){
+		getFragmentManager().addOnBackStackChangedListener(new OnBackStackChangedListener() {
+			
+			@Override
+			public void onBackStackChanged() {
+				int stackSize = getFragmentManager().getBackStackEntryCount();
+				if (stackSize > 0){
+					getActionBar().setDisplayShowHomeEnabled(true);
+					getActionBar().setDisplayHomeAsUpEnabled(true);
+				} else {
+					getActionBar().setDisplayShowHomeEnabled(false);
+					getActionBar().setDisplayHomeAsUpEnabled(false);
+				}
+			}
+		});
+		
+		ListView listView = (ListView) findViewById(R.id.Claims_List_View);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				openAddClaimFrag(adapter.getItem(position));
+			}
+			
+		});
+		
     }
     
     private class ClaimAdapter extends BaseAdapter{
