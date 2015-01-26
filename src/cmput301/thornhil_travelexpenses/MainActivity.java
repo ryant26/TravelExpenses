@@ -13,6 +13,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,8 +60,10 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.main, menu);
+    	if (getFragmentManager().getBackStackEntryCount() == 0){
+	    	MenuInflater inflater = getMenuInflater();
+	    	inflater.inflate(R.menu.main, menu);
+    	}
     	return super.onCreateOptionsMenu(menu);
     };
     
@@ -81,12 +84,17 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     }
     
     @Override
-    public void dataItemChanged(Claim item) {};
+    public void dataItemChanged(Claim item) {
+    	adapter.notifyDataSetChanged();
+    };
     
     @Override
     public void dataItemCreated(Claim item) {
-    	// TODO Auto-generated method stub
-    	
+    	try{
+    		adapter.addClaim(item);
+    	} catch (IOException e){
+    		Log.d("error", "Could not add claim to storage!");
+    	}
     }
     
     private void openAddClaimFrag() {

@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" 
+    android:orientation="vertical"
     android:background="@android:color/white">
 
     <EditText
         android:id="@+id/editClaimName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:ems="10"
-        android:inputType="textPersonName" 
+        android:inputType="textCapWords" 
         android:hint="@string/claim_name">
 
         <requestFocus />
     </EditText>
-
-    <DatePicker
-        android:id="@+id/claimStartDate"
-        android:layout_width="wrap_content"
+    
+    <TextView 
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText1" 
-        android:calendarViewShown="false"/>
+        android:text="@string/from_date"
+        android:textStyle="bold"
+        android:textSize="25sp"/>
     
     <DatePicker
         android:id="@+id/claimEndDate"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:calendarViewShown="false"
-        android:layout_toRightOf="@id/claimStartDate" />
+        android:calendarViewShown="false" />
+    
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/to_date"
+        android:textStyle="bold"
+        android:textSize="25sp"/>
 
-</RelativeLayout>
+    <DatePicker
+        android:id="@+id/claimStartDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false" />
+
+</LinearLayout>
