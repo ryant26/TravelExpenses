@@ -18,6 +18,9 @@ public class DataItem {
 	public DataItem(){};
 	
 	public Integer getId() {
+		if (id == null){
+			id = hashCode();
+		}
 		return id;
 	}
 

@@ -1,5 +1,7 @@
 package cmput301.thornhil_helpers;
 
+import java.util.ArrayList;
+
 import cmput301.thornhil_dataClasses.DataItem;
 import cmput301.thornhil_travelexpenses.DataChangedListener;
 import cmput301.thornhil_travelexpenses.R;
@@ -11,6 +13,7 @@ import android.widget.AbsListView.MultiChoiceModeListener;
 public class MultiSelectListener <T extends DataItem> implements MultiChoiceModeListener{
 
 	private DataChangedListener<T> listener;
+	ArrayList<Integer> selectedItems = new ArrayList<Integer>();
 	
 	public MultiSelectListener(DataChangedListener<T> listener) {
 		this.listener = listener;
@@ -30,20 +33,31 @@ public class MultiSelectListener <T extends DataItem> implements MultiChoiceMode
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		// TODO Auto-generated method stub
+		switch (item.getItemId()) {
+		case R.id.delete:
+			listener.dataItemsDeleted(selectedItems);
+			mode.finish();
+			break;
+
+		default:
+			break;
+		}
 		return false;
 	}
 
 	@Override
 	public void onDestroyActionMode(ActionMode mode) {
-		// TODO Auto-generated method stub
-		
+		selectedItems = new ArrayList<Integer>();
 	}
 
 	@Override
 	public void onItemCheckedStateChanged(ActionMode mode, int position,
 			long id, boolean checked) {
-		// TODO Auto-generated method stub
+		if (checked){
+			selectedItems.add(position);
+		}else {
+			selectedItems.remove(selectedItems.contains(position));
+		}
 		
 	}
 

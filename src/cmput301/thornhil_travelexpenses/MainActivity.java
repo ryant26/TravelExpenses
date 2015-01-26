@@ -88,9 +88,8 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     }
     
     @Override
-	public void dataItemsDeleted(ArrayList<Claim> items) {
-		// TODO Auto-generated method stub
-		
+	public void dataItemsDeleted(ArrayList<Integer> items) {
+		adapter.deletePositions(items);
 	}
     
     private void openAddClaimFrag(Claim claim) {
@@ -199,6 +198,16 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 			notifyDataSetChanged();
 		}
 		
+		public void deleteClaim(Claim claim) throws IOException{
+			cache.deleteClaim(claim.getId());
+		}
+		
+		public void deletePositions(ArrayList<Integer> positions){
+			for (Integer i=0; i < positions.size(); i++){
+				cache.deleteClaimNoWrite(getItem(positions.get(i)-i));
+			}
+			forceSaveData();
+		}
 		
 		public View formatView(View rowView, Claim item){
 			((TextView) rowView.findViewById(R.id.Name)).setText(item.getName());

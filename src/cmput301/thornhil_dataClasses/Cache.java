@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
@@ -67,8 +68,19 @@ public class Cache
 		writeAllData();
 	}
 	
-	public void deleteExpense(Integer ID) throws IOException{
+	public void deleteClaimNoWrite(Claim claim){
+		for (Expense e : getExpensesForClaim(claim)){
+			deleteExpenseNoWrite(e.getId());
+		}
+		claims.remove(claim.getId());
+	}
+	
+	public void deleteExpenseNoWrite(Integer ID){
 		expenses.remove(ID);
+	}
+	
+	public void deleteExpense(Integer ID) throws IOException{
+		deleteExpenseNoWrite(ID);
 		writeExpenses();
 	}
 	
@@ -87,6 +99,16 @@ public class Cache
 	public void writeAllData() throws IOException{
 		writeClaims();
 		writeExpenses();
+	}
+	
+	private ArrayList<Expense> getExpensesForClaim(Claim claim){
+		ArrayList<Expense> out = new ArrayList<Expense>();
+		for (Expense e : getAllExpenses()){
+			if (e.getClaimId() == claim.getId()){
+				out.add(e);
+			}
+		}
+		return out;
 	}
 	
 	private void addExpense(Expense e){
