@@ -3,9 +3,11 @@ package cmput301.thornhil_travelexpenses;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Observer;
 
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
+import cmput301.thornhil_helpers.Formatter;
 import cmput301.thornhil_helpers.MultiSelectListener;
 import cmput301.thornhil_travelexpenses.ClaimEditorFragment.ClaimChangeListener;
 import android.app.Activity;
@@ -31,6 +33,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements ClaimChangeListener { 
 	
 	private ClaimAdapter adapter;
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +79,14 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     public void dataItemChanged(Claim item) {
     	adapter.notifyDataSetChanged();
     	adapter.forceSaveData();
+    	notifyObserversOfDataChange();
     };
     
     @Override
     public void dataItemCreated(Claim item) {
     	try{
     		adapter.addClaim(item);
+    		notifyObserversOfDataChange();
     	} catch (IOException e){
     		Log.d("error", "Could not add claim to storage!");
     	}
@@ -92,7 +97,7 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 		adapter.deletePositions(items);
 	}
     
-    private void openAddClaimFrag(Claim claim) {
+    public void openAddClaimFrag(Claim claim) {
     	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
     	ClaimEditorFragment fragment;
     	
@@ -110,8 +115,9 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     private void openClaimInfoFrag(Claim claim){
     	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
     	ClaimInfoFragment fragment = new ClaimInfoFragment(claim);
+    	observers.add(fragment);
     	
-    	fragmentTransaction.add(R.id.main_activity_frame_layout, fragment, "Add Claim");
+    	fragmentTransaction.add(R.id.main_activity_frame_layout, fragment, "View Claim");
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
     	
@@ -121,6 +127,16 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     	FragmentManager fm = getFragmentManager();
     	if (fm.getBackStackEntryCount() > 0){
     		fm.popBackStack();
+    	}
+    }
+    
+    private void notifyObserversOfDataChange(){
+    	for (int i = 0; i < observers.size(); i++){
+    		try {
+    			observers.get(i).update(null, null);
+    		} catch (NullPointerException e){
+    			observers.remove(i);
+    		}
     	}
     }
     
@@ -222,7 +238,7 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 		public View formatView(View rowView, Claim item){
 			((TextView) rowView.findViewById(R.id.Name)).setText(item.getName());
 			((TextView) rowView.findViewById(R.id.Status)).setText("Status: " + item.getStatusString());
-			((TextView) rowView.findViewById(R.id.date)).setText(item.getDate().toString());
+			((TextView) rowView.findViewById(R.id.date)).setText(Formatter.formatDate(item.getDate()));
 			
 			switch (item.getStatus()) {
 			case approved:

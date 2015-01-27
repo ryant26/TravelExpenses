@@ -1,5 +1,6 @@
 package cmput301.thornhil_travelexpenses;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -46,11 +47,17 @@ public class ClaimEditorFragment extends Fragment
 		startDate = (DatePicker) view.findViewById(R.id.claimStartDate);
 		endDate = (DatePicker) view.findViewById(R.id.claimEndDate);
 		
+		Calendar cal = Calendar.getInstance();
+		
 		
 		try{
 			claimNameEditor.setText(claim.getName());
-			startDate.updateDate(claim.getDate().getYear(), claim.getDate().getMonth(), claim.getDate().getDay());
-			endDate.updateDate(claim.getEndDate().getYear(), claim.getEndDate().getMonth(), claim.getEndDate().getDay());
+			
+			cal.setTime(claim.getDate());
+			startDate.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+			
+			cal.setTime(claim.getEndDate());
+			endDate.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 			
 		} catch (NullPointerException e){}
 		
@@ -83,24 +90,30 @@ public class ClaimEditorFragment extends Fragment
 		case R.id.save_claim:
 			if (newClaim){
 				claimListener.dataItemCreated(claim);
+				getActivity().getFragmentManager().popBackStack();
 			} else {
 				claimListener.dataItemChanged(claim);
+				getActivity().getFragmentManager().popBackStack();
 			}
 			break;
 		default:
 			break;
 		}
-		getActivity().getFragmentManager().popBackStack();
+		
 		return super.onOptionsItemSelected(item);
 	}
 	
 	private void getAllFields(){
-		Date sDate = new Date(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth());
-		Date eDate = new Date(endDate.getYear(), endDate.getMonth(), endDate.getDayOfMonth());
-		String name = claimNameEditor.getText().toString();
+		Calendar cal = Calendar.getInstance();
 		
-		claim.setDate(sDate);
-		claim.setEndDate(eDate);
+		cal.set(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth());
+		claim.setDate(cal.getTime());
+		
+		cal.set(endDate.getYear(), endDate.getMonth(), endDate.getDayOfMonth());		
+		claim.setEndDate(cal.getTime());
+		
+		String name = claimNameEditor.getText().toString();
+
 		claim.setName(name);
 	}
 	

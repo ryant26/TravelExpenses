@@ -1,14 +1,21 @@
 package cmput301.thornhil_travelexpenses;
 
+import java.text.SimpleDateFormat;
+import java.util.Observable;
+import java.util.Observer;
+
 import cmput301.thornhil_dataClasses.Claim;
+import cmput301.thornhil_helpers.Formatter;
 import android.R.anim;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,7 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ClaimInfoFragment extends Fragment implements OnItemSelectedListener{
+public class ClaimInfoFragment extends Fragment implements OnItemSelectedListener, Observer{
 	
 	private DataChangedListener<Claim> claimListener;
 	private Claim claim;
@@ -29,6 +36,7 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		View view = inflater.inflate(R.layout.claim_info_view, container, false);
 		setUpView(view);
 		return view;
@@ -47,8 +55,23 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.claim_info_menu, menu);
+		if (getFragmentManager().getBackStackEntryCount() == 1){
+			inflater.inflate(R.menu.claim_info_menu, menu);
+		}
 		super.onCreateOptionsMenu(menu, inflater);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.edit_claim:
+			((MainActivity) getActivity()).openAddClaimFrag(claim);
+			break;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
@@ -64,14 +87,29 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 		
 	}
 	
+	@Override
+	public void update(Observable observable, Object data) {
+		getActivity().runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				setUpView(getView());
+			}
+		});
+		
+		
+	}
+	
 	private void setUpView(View mainView){
 		TextView claimTitle = (TextView) mainView.findViewById(R.id.ClaimTitle);
 		TextView fromDate = (TextView) mainView.findViewById(R.id.fromDate);
 		TextView toDate = (TextView) mainView.findViewById(R.id.toDate);
 		
 		claimTitle.setText(claim.getName());
-		fromDate.setText(claim.getDate().toString());
-		toDate.setText(claim.getEndDate().toString());
+		fromDate.setText(Formatter.formatDate(claim.getDate()));
+		toDate.setText(Formatter.formatDate(claim.getEndDate()));
+		
+		
 		
 		setUpSpinner(mainView);
 	}

@@ -6,39 +6,61 @@
 	android:background="@android:color/white">
 	
 	<LinearLayout 
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="vertical" 
+	    android:layout_weight="1">
 	    
 	    <TextView 
 	        android:id="@+id/ClaimTitle"
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
+	        android:layout_height="wrap_content" 
+	        android:layout_weight="1"
+	        android:textSize="20dp"
+	        android:textStyle="bold"/>
+	    
+	    <TextView 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/from_date"
+	        android:textStyle="bold"
+	        android:textSize="18sp"/>
 	    
 	    <TextView 
 	        android:id="@+id/fromDate"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:textSize="12sp"/>
+	        android:textSize="16sp"
+	        android:layout_weight="1"/>
+	    
+	    <TextView 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/to_date"
+	        android:textStyle="bold"
+	        android:textSize="18sp"/>
 	    
 	    <TextView 
 	        android:id="@+id/toDate"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:textSize="12sp"/>
+	        android:textSize="16sp"
+	        android:layout_weight="1"/>
 	    
 	    <TextView 
 	        android:id="@+id/Total"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
-	        android:text="@string/total"/>
+	        android:text="@string/total"
+	        android:layout_weight="10"/>
 	    
 	</LinearLayout>
 	
 	<LinearLayout 
-	    android:layout_width="wrap_content"
+	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
+	    android:orientation="vertical" 
+	    android:layout_weight="1">
 	    
 	    <TextView 
 	        android:layout_width="wrap_content"

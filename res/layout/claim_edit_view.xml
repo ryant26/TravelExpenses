@@ -24,7 +24,7 @@
         android:textSize="25sp"/>
     
     <DatePicker
-        android:id="@+id/claimEndDate"
+        android:id="@+id/claimStartDate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:calendarViewShown="false" />
@@ -37,7 +37,7 @@
         android:textSize="25sp"/>
 
     <DatePicker
-        android:id="@+id/claimStartDate"
+        android:id="@+id/claimEndDate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:calendarViewShown="false" />
