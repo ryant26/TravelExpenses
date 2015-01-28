@@ -236,17 +236,19 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 		}
 		
 		public View formatView(View rowView, Claim item){
+			TextView status = ((TextView) rowView.findViewById(R.id.Status));
 			((TextView) rowView.findViewById(R.id.Name)).setText(item.getName());
-			((TextView) rowView.findViewById(R.id.Status)).setText("Status: " + item.getStatusString());
+			((TextView) rowView.findViewById(R.id.Status)).setText("Status: " + item.getStatus().name());
 			((TextView) rowView.findViewById(R.id.date)).setText(Formatter.formatDate(item.getDate()));
 			
 			switch (item.getStatus()) {
 			case approved:
-				rowView.setBackgroundColor(Color.GREEN);
+				status.setTextColor(Color.GREEN);
 				break;
 
 			default:
-				rowView.setBackgroundColor(Color.WHITE);
+				status.setTextColor(Color.BLACK);
+				break;
 			}
 			
 			return rowView;

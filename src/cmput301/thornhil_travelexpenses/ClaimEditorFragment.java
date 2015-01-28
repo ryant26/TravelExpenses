@@ -1,21 +1,14 @@
 package cmput301.thornhil_travelexpenses;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import cmput301.thornhil_dataClasses.Claim;
-import cmput301.thornhil_dataClasses.DataItem;
-import cmput301.thornhil_dataClasses.Expense;
-import android.R.anim;
-import android.R.menu;
 import android.app.Activity;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.*;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 
 public class ClaimEditorFragment extends Fragment
@@ -84,17 +77,17 @@ public class ClaimEditorFragment extends Fragment
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		getAllFields();
+		
 		
 		switch (item.getItemId()) {
 		case R.id.save_claim:
+			getAllFields();
 			if (newClaim){
 				claimListener.dataItemCreated(claim);
-				getActivity().getFragmentManager().popBackStack();
 			} else {
 				claimListener.dataItemChanged(claim);
-				getActivity().getFragmentManager().popBackStack();
 			}
+			getActivity().getFragmentManager().popBackStack();
 			break;
 		default:
 			break;

@@ -78,7 +78,7 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		ClaimStatus status = Claim.getClaimStatusFromString((String) parent.getItemAtPosition(position));
+		ClaimStatus status = ClaimStatus.fromString(((String) parent.getItemAtPosition(position)));
 		claim.setStatus(status);
 		claimListener.dataItemChanged(claim);
 	}
@@ -125,7 +125,7 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		spinner.setAdapter(adapter);
-		spinner.setSelection(adapter.getPosition(claim.getStatusString()));
+		spinner.setSelection(adapter.getPosition(claim.getStatus().toString()));
 		spinner.setOnItemSelectedListener(this);
 		
 	}
