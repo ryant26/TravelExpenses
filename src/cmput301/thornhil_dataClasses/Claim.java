@@ -18,6 +18,20 @@ public class Claim extends DataItem{
 		return status;
 	}
 	
+	public static ClaimStatus getClaimStatusFromString(String in){
+		if (in.equalsIgnoreCase("submitted")){
+			return ClaimStatus.submitted;
+		} else if (in.equalsIgnoreCase("accepted")) {
+			return ClaimStatus.accepted;
+		} else if (in.equalsIgnoreCase("approved")) {
+			return ClaimStatus.approved;
+		} else if (in.equalsIgnoreCase("open")) {
+			return ClaimStatus.open;
+		}else {
+			throw new RuntimeException("Cannot convert string to claim status!");
+		}
+	}
+	
 	public String getStatusString(){
 		switch (status) {
 		case submitted:

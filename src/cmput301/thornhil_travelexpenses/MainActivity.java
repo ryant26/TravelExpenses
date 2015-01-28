@@ -242,11 +242,11 @@ public class MainActivity extends Activity implements ClaimChangeListener {
 			
 			switch (item.getStatus()) {
 			case approved:
-				rowView.setBackgroundColor(Color.DKGRAY);
+				rowView.setBackgroundColor(Color.GREEN);
 				break;
 
 			default:
-				break;
+				rowView.setBackgroundColor(Color.WHITE);
 			}
 			
 			return rowView;

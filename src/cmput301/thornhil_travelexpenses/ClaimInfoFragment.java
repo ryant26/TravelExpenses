@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import cmput301.thornhil_dataClasses.Claim;
+import cmput301.thornhil_dataClasses.ClaimStatus;
 import cmput301.thornhil_helpers.Formatter;
 import android.R.anim;
 import android.app.Activity;
@@ -77,8 +78,9 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
-		
+		ClaimStatus status = Claim.getClaimStatusFromString((String) parent.getItemAtPosition(position));
+		claim.setStatus(status);
+		claimListener.dataItemChanged(claim);
 	}
 
 	@Override
