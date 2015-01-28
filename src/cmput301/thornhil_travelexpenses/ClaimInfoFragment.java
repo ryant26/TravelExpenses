@@ -1,16 +1,14 @@
 package cmput301.thornhil_travelexpenses;
 
-import java.text.SimpleDateFormat;
 import java.util.Observable;
 import java.util.Observer;
 
 import cmput301.thornhil_dataClasses.Claim;
 import cmput301.thornhil_dataClasses.ClaimStatus;
 import cmput301.thornhil_helpers.Formatter;
-import android.R.anim;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -56,7 +55,7 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		if (getFragmentManager().getBackStackEntryCount() == 1){
+		if (getFragmentManager().getBackStackEntryCount() == 1 && isClaimEditable()){
 			inflater.inflate(R.menu.claim_info_menu, menu);
 		}
 		super.onCreateOptionsMenu(menu, inflater);
@@ -96,6 +95,7 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 			@Override
 			public void run() {
 				setUpView(getView());
+				getActivity().invalidateOptionsMenu();
 			}
 		});
 		
@@ -112,13 +112,14 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 		toDate.setText(Formatter.formatDate(claim.getEndDate()));
 		
 		
-		
 		setUpSpinner(mainView);
 	}
 	
 	private void setUpSpinner(View mainView){
 		//This code was retrieved from http://developer.android.com/guide/topics/ui/controls/spinner.html on 01/25/2015
 		Spinner spinner = (Spinner) mainView.findViewById(R.id.claim_status_spinner);
+		TextView textView = (TextView) mainView.findViewById(R.id.not_editable_warning);
+		
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.Status_Spinner, android.R.layout.simple_spinner_item);
 		spinner.setAdapter(adapter);
 		
@@ -128,6 +129,21 @@ public class ClaimInfoFragment extends Fragment implements OnItemSelectedListene
 		spinner.setSelection(adapter.getPosition(claim.getStatus().toString()));
 		spinner.setOnItemSelectedListener(this);
 		
+		if (!isClaimEditable()){
+			Button button = (Button) mainView.findViewById(R.id.add_edit_expenses_button);
+			button.setClickable(false);
+			textView.setVisibility(View.VISIBLE);
+		} else {
+			textView.setVisibility(View.INVISIBLE);
+		}
+		
+	}
+	
+	private boolean isClaimEditable(){
+		if (claim.getStatus() == ClaimStatus.submitted || claim.getStatus() == ClaimStatus.approved){
+			return false;
+		}
+		return true;
 	}
 
 }

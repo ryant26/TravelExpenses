@@ -20,5 +20,6 @@
     </string-array>
     <string name="add_edit_expenses">Add / Edit Expenses</string>
     <string name="edit">edit</string>
+    <string name="cant_edit_claim">*You cannot edit a claim with the status &quot;Submitted&quot; or &quot;Approved&quot;</string>
 
 </resources>
