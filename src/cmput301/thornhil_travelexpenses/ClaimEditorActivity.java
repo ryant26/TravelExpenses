@@ -101,8 +101,7 @@ public class ClaimEditorActivity extends Activity
 	}
 	
 	private void parseIntent(){
-		String claimIdString = intent.getExtras().getString(Constants.PASSEDCLAIM);
-		claim = cache.getClaim(Integer.parseInt(claimIdString));
+		claim = cache.getClaim(intent.getExtras().getInt(Constants.PASSEDCLAIM));
 		initialize();
 	}
 	

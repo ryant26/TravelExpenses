@@ -8,15 +8,11 @@ import cmput301.thornhil_helpers.Formatter;
 import cmput301.thornhil_helpers.Observer;
 import android.app.Activity;
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -52,10 +48,10 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.edit_claim:
-			//TODO FIRE AN INTENT
-			((MainActivity) getActivity()).openAddClaimFrag(claim);
-			break;
-
+			Intent intent = new Intent(this, ClaimEditorActivity.class);
+			intent.putExtra(Constants.PASSEDCLAIM, claim.getId());
+			startActivity(intent);
+			return true;
 		default:
 			break;
 		}
@@ -126,8 +122,7 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 	}
 	
 	private void parseIntent(){
-		String claimIdString = intent.getExtras().getString(Constants.PASSEDCLAIM);
-		claim = cache.getClaim(Integer.parseInt(claimIdString));
+		claim = cache.getClaim(intent.getExtras().getInt(Constants.PASSEDCLAIM));
 	}
 
 	
