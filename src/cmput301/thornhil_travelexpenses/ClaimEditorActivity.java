@@ -101,7 +101,11 @@ public class ClaimEditorActivity extends Activity
 	}
 	
 	private void parseIntent(){
-		claim = cache.getClaim(intent.getExtras().getInt(Constants.PASSEDCLAIM));
+		try{
+			claim = cache.getClaim(intent.getExtras().getInt(Constants.PASSEDCLAIM));
+		} catch (NullPointerException e){
+			Log.d("VERBOSE", "No data passed in intent");
+		}
 		initialize();
 	}
 	

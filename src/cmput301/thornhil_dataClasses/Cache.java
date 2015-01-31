@@ -1,34 +1,23 @@
 package cmput301.thornhil_dataClasses;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
-import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
 import cmput301.thornhil_helpers.Observer;
 import cmput301.thornhil_helpers.StorageAdapter;
-import cmput301.thornhil_helpers.StorageHelper;
 
 
 public class Cache
 {
 	
-	private interface DataPaser{
-		public DataItem parseData(BufferedReader reader);
-	}
-	
 	private Hashtable<Integer, Claim> claims = new Hashtable<Integer, Claim>();
 	private Hashtable<Integer, Expense> expenses = new Hashtable<Integer, Expense>();
-	private ArrayList<Observer<Cache>> views;
+	private ArrayList<Observer<Cache>> views = new ArrayList<Observer<Cache>>();
 	private StorageAdapter storageAdapter;
 	
 	public Cache(Context context)

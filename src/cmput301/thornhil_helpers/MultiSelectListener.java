@@ -56,9 +56,7 @@ public class MultiSelectListener <T extends DataItem> implements MultiChoiceMode
 		if (checked){
 			selectedItems.add(position);
 		}else {
-			selectedItems.remove(selectedItems.contains(position));
+			selectedItems.remove(selectedItems.indexOf(position));
 		}
-		
 	}
-
 }

@@ -30,6 +30,7 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.claim_info_view);
 		cache = TravelExpensesApplication.getCache();
+		cache.addView(this);
 		intent = getIntent();
 		
 		parseIntent();
