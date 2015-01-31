@@ -57,6 +57,10 @@ public class Cache
 		return claims.values();
 	}
 	
+	public Claim getClaim(Integer id){
+		return claims.get(id);
+	}
+	
 	public Iterable<Expense> getAllExpenses(){
 		return expenses.values();
 	}
@@ -110,6 +114,10 @@ public class Cache
 	
 	public void removeView(Observer<Cache> o){
 		views.remove(o);
+	}
+	
+	public void notifyDataChanged(){
+		updateViews();
 	}
 	
 	private void updateViews(){

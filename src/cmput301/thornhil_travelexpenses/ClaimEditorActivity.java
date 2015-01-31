@@ -1,47 +1,46 @@
 package cmput301.thornhil_travelexpenses;
 
+import java.io.IOException;
 import java.util.Calendar;
 
+import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
+import cmput301.thornhil_helpers.Constants;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 
-public class ClaimEditorFragment extends Fragment
+public class ClaimEditorActivity extends Activity
 {
-	private DataChangedListener<Claim> claimListener;
+	private Cache cache;
 	private Claim claim;
 	private Boolean newClaim;
 	private EditText claimNameEditor;
 	private DatePicker startDate;
 	private DatePicker endDate;
+	private Intent intent;
 	
 	public interface ClaimChangeListener extends DataChangedListener<Claim>{};
-
-	public ClaimEditorFragment(Claim claim) {
-		this.claim = claim;
-		newClaim = false;
-	}
-	
-	public ClaimEditorFragment() {
-		claim = new Claim();
-		newClaim = true;
-	}
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
-		setHasOptionsMenu(true);
-		View view = inflater.inflate(R.layout.claim_edit_view, container, false);
-		claimNameEditor = (EditText) view.findViewById(R.id.editClaimName);
-		startDate = (DatePicker) view.findViewById(R.id.claimStartDate);
-		endDate = (DatePicker) view.findViewById(R.id.claimEndDate);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.claim_edit_view);
+		intent = getIntent();
+		parseIntent();
+		
+		claimNameEditor = (EditText) findViewById(R.id.editClaimName);
+		startDate = (DatePicker) findViewById(R.id.claimStartDate);
+		endDate = (DatePicker) findViewById(R.id.claimEndDate);
 		
 		Calendar cal = Calendar.getInstance();
-		
+		cache = TravelExpensesApplication.getCache();
 		
 		try{
 			claimNameEditor.setText(claim.getName());
@@ -54,41 +53,31 @@ public class ClaimEditorFragment extends Fragment
 			
 		} catch (NullPointerException e){}
 		
-		return view;
-	};
-	
-	@Override
-	public void onAttach(Activity activity) {
-		activity.invalidateOptionsMenu();
-		try {
-			claimListener = (DataChangedListener<Claim>) activity;
-		} catch (ClassCastException e){
-			Log.d("error", "Activity calling fragment has not implemented the listener");
-		}
-		super.onAttach(activity);
 	}
 	
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// TODO Auto-generated method stub
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.edit_claim_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
-		
 		switch (item.getItemId()) {
 		case R.id.save_claim:
 			getAllFields();
 			if (newClaim){
-				claimListener.dataItemCreated(claim);
+				try {
+					cache.addNewClaim(claim);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			} else {
-				claimListener.dataItemChanged(claim);
+				cache.notifyDataChanged();
 			}
-			getActivity().getFragmentManager().popBackStack();
-			break;
+			finish();
+			return true;
 		default:
 			break;
 		}
@@ -108,6 +97,21 @@ public class ClaimEditorFragment extends Fragment
 		String name = claimNameEditor.getText().toString();
 
 		claim.setName(name);
+	}
+	
+	private void parseIntent(){
+		String claimIdString = intent.getExtras().getString(Constants.PASSEDCLAIM);
+		claim = cache.getClaim(Integer.parseInt(claimIdString));
+		initialize();
+	}
+	
+	private void initialize(){
+		if (claim == null){
+			claim = new Claim();
+			newClaim = true;
+		} else {
+			newClaim = false;
+		}
 	}
 	
 }

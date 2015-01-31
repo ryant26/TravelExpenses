@@ -9,7 +9,7 @@ import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
 import cmput301.thornhil_helpers.Formatter;
 import cmput301.thornhil_helpers.MultiSelectListener;
-import cmput301.thornhil_travelexpenses.ClaimEditorFragment.ClaimChangeListener;
+import cmput301.thornhil_travelexpenses.ClaimEditorActivity.ClaimChangeListener;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentManager.OnBackStackChangedListener;
@@ -33,7 +33,6 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements ClaimChangeListener { 
 	
 	private ClaimAdapter adapter;
-	private ArrayList<Observer> observers = new ArrayList<Observer>();
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public class MainActivity extends Activity implements ClaimChangeListener {
         setContentView(R.layout.activity_main);
         getActionBar().setDisplayShowHomeEnabled(false);
         
-        Cache dataCache = new Cache(getApplicationContext());
+        Cache dataCache = TravelExpensesApplication.getCache();
         adapter = new ClaimAdapter(this, R.layout.claim_row_layout, dataCache);
         ListView listView = (ListView) findViewById(R.id.Claims_List_View);
         listView.setAdapter(adapter);
@@ -52,10 +51,8 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	if (getFragmentManager().getBackStackEntryCount() == 0){
-	    	MenuInflater inflater = getMenuInflater();
-	    	inflater.inflate(R.menu.main, menu);
-    	}
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.main, menu);
     	return super.onCreateOptionsMenu(menu);
     };
     
@@ -64,10 +61,10 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     	switch (item.getItemId()) {
     	   case android.R.id.home:
     		   popFragment();
-    	       break;
+    	       return true;
     	   case R.id.add_claim:
 			   openAddClaimFrag(null);
-			   break;
+			   return true;
     	    default:
     	       break;
     	}
@@ -99,12 +96,12 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     
     public void openAddClaimFrag(Claim claim) {
     	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-    	ClaimEditorFragment fragment;
+    	ClaimEditorActivity fragment;
     	
     	if (claim == null) {
-    		fragment = new ClaimEditorFragment();
+    		fragment = new ClaimEditorActivity();
     	} else {
-    		fragment = new ClaimEditorFragment(claim);
+    		fragment = new ClaimEditorActivity(claim);
     	}
     	
 		fragmentTransaction.add(R.id.main_activity_frame_layout, fragment, "Add Claim");
@@ -114,7 +111,7 @@ public class MainActivity extends Activity implements ClaimChangeListener {
     
     private void openClaimInfoFrag(Claim claim){
     	FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-    	ClaimInfoFragment fragment = new ClaimInfoFragment(claim);
+    	ClaimInfoActivity fragment = new ClaimInfoActivity(claim);
     	observers.add(fragment);
     	
     	fragmentTransaction.add(R.id.main_activity_frame_layout, fragment, "View Claim");

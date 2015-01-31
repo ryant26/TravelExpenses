@@ -24,12 +24,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class ClaimInfoFragment extends Fragment implements OnItemSelectedListener, Observer{
+public class ClaimInfoActivity extends Fragment implements OnItemSelectedListener, Observer{
 	
 	private DataChangedListener<Claim> claimListener;
 	private Claim claim;
 	
-	public ClaimInfoFragment(Claim claim){
+	public ClaimInfoActivity(Claim claim){
 		this.claim = claim;
 	}
 	
