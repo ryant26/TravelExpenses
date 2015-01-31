@@ -29,6 +29,7 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.claim_info_view);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		cache = TravelExpensesApplication.getCache();
 		cache.addView(this);
 		intent = getIntent();

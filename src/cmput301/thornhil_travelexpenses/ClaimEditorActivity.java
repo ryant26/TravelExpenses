@@ -86,6 +86,14 @@ public class ClaimEditorActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	public Intent getParentActivityIntent() {
+		super.getParentActivityIntent();
+		Intent intent = new Intent(getApplicationContext(), ClaimInfoActivity.class);
+		intent.putExtra(Constants.PASSEDCLAIM, claim.getId());
+		return intent;
+	}
+	
 	private void getAllFields(){
 		Calendar cal = Calendar.getInstance();
 		
