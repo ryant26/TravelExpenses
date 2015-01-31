@@ -31,6 +31,8 @@ public class ClaimEditorActivity extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		cache = TravelExpensesApplication.getCache();
+		
 		setContentView(R.layout.claim_edit_view);
 		intent = getIntent();
 		parseIntent();
@@ -40,7 +42,6 @@ public class ClaimEditorActivity extends Activity
 		endDate = (DatePicker) findViewById(R.id.claimEndDate);
 		
 		Calendar cal = Calendar.getInstance();
-		cache = TravelExpensesApplication.getCache();
 		
 		try{
 			claimNameEditor.setText(claim.getName());
