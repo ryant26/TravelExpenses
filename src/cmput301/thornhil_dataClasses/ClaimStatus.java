@@ -3,7 +3,7 @@ package cmput301.thornhil_dataClasses;
 public enum ClaimStatus {
 	
 	submitted("Submitted"),
-	accepted("Accepted"),
+	returned("Returned"),
 	approved("Approved"),
 	open("Open");
 	

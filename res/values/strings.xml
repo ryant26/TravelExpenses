@@ -14,7 +14,7 @@
     <string name="status">Status:</string>
     <string-array name="Status_Spinner">
         <item>Open</item>
-        <item>Accepted</item>
+        <item>Returned</item>
         <item>Submitted</item>
         <item>Approved</item>
     </string-array>

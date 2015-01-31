@@ -13,6 +13,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import cmput301.thornhil_helpers.Observer;
 import cmput301.thornhil_helpers.StorageAdapter;
 import cmput301.thornhil_helpers.StorageHelper;
 
@@ -26,6 +28,7 @@ public class Cache
 	
 	private Hashtable<Integer, Claim> claims = new Hashtable<Integer, Claim>();
 	private Hashtable<Integer, Expense> expenses = new Hashtable<Integer, Expense>();
+	private ArrayList<Observer<Cache>> views;
 	private StorageAdapter storageAdapter;
 	
 	public Cache(Context context)
@@ -101,6 +104,24 @@ public class Cache
 		writeExpenses();
 	}
 	
+	public void addView(Observer<Cache> o){
+		views.add(o);
+	}
+	
+	public void removeView(Observer<Cache> o){
+		views.remove(o);
+	}
+	
+	private void updateViews(){
+		for (Observer<Cache> o : views){
+			if (o != null) {
+				o.update(this); // Were we garbage collected?
+			} else {
+				removeView(o);
+			}
+		}
+	}
+	
 	private ArrayList<Expense> getExpensesForClaim(Claim claim){
 		ArrayList<Expense> out = new ArrayList<Expense>();
 		for (Expense e : getAllExpenses()){
@@ -138,10 +159,12 @@ public class Cache
 	
 	private void writeClaims() throws IOException{
 		storageAdapter.storeAllClaims(getAllClaims());
+		updateViews();
 	}
 	
 	private void writeExpenses() throws IOException{
 		storageAdapter.storeAllExpenses(getAllExpenses());
+		updateViews();
 	}
 	
 	
