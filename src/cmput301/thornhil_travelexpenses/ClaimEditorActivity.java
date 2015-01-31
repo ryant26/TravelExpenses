@@ -2,10 +2,12 @@ package cmput301.thornhil_travelexpenses;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
 import cmput301.thornhil_helpers.Constants;
+import cmput301.thornhil_helpers.Formatter;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
@@ -67,17 +69,19 @@ public class ClaimEditorActivity extends Activity
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.save_claim:
-			getAllFields();
-			if (newClaim){
-				try {
+			try {
+				getAllFields();
+				if (newClaim){
 					cache.addNewClaim(claim);
-				} catch (IOException e) {
-					e.printStackTrace();
+				} else {
+					cache.notifyDataChanged();
 				}
-			} else {
-				cache.notifyDataChanged();
+				finish();
+			} catch (IOException e){
+				e.printStackTrace();
+			} catch (RuntimeException e){
+				Formatter.showToast(this, "Ensure start date is before end date");
 			}
-			finish();
 			return true;
 		default:
 			break;
@@ -96,16 +100,28 @@ public class ClaimEditorActivity extends Activity
 	
 	private void getAllFields(){
 		Calendar cal = Calendar.getInstance();
+		Date sDate;
+		Date eDate;
 		
 		cal.set(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth());
-		claim.setDate(cal.getTime());
+		sDate = cal.getTime();
+		
 		
 		cal.set(endDate.getYear(), endDate.getMonth(), endDate.getDayOfMonth());		
-		claim.setEndDate(cal.getTime());
+		eDate = cal.getTime();
+		
+		if (eDate.before(sDate)){
+			throw new RuntimeException("The End date must be after the Start date");
+		} else {
+			claim.setDate(sDate);
+			claim.setEndDate(eDate);
+		}
 		
 		String name = claimNameEditor.getText().toString();
 
 		claim.setName(name);
+		
+		
 	}
 	
 	private void parseIntent(){
