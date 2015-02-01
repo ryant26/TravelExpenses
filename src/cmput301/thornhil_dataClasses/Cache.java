@@ -50,8 +50,8 @@ public class Cache
 		return claims.get(id);
 	}
 	
-	public Iterable<Expense> getAllExpenses(){
-		return expenses.values();
+	public ArrayList<Expense> getAllExpenses(){
+		return new ArrayList<Expense>(expenses.values());
 	}
 	
 	public void deleteClaim(Integer ID) throws IOException{

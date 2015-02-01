@@ -9,10 +9,12 @@ import cmput301.thornhil_helpers.Observer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,6 +38,15 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 		
 		parseIntent();
 		setUpView();
+		
+		Button button = (Button) findViewById(R.id.add_edit_expenses_button);
+		button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startExpenseListActivity();
+			}
+		});
+		
 		super.onCreate(savedInstanceState);
 	}
 	
@@ -79,6 +90,12 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 		setUpView();	
 	}
 	
+	@Override
+	protected void onDestroy() {
+		cache.removeView(this);
+		super.onDestroy();
+	}
+	
 	private void setUpView(){
 		TextView claimTitle = (TextView) findViewById(R.id.ClaimTitle);
 		TextView fromDate = (TextView) findViewById(R.id.fromDate);
@@ -90,12 +107,13 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 		
 		
 		setUpSpinner();
+		setUpButton();
 	}
 	
 	private void setUpSpinner(){
 		//This code was retrieved from http://developer.android.com/guide/topics/ui/controls/spinner.html on 01/25/2015
 		Spinner spinner = (Spinner) findViewById(R.id.claim_status_spinner);
-		TextView textView = (TextView) findViewById(R.id.not_editable_warning);
+		
 		
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Status_Spinner, android.R.layout.simple_spinner_item);
 		spinner.setAdapter(adapter);
@@ -105,15 +123,20 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 		spinner.setAdapter(adapter);
 		spinner.setSelection(adapter.getPosition(claim.getStatus().toString()));
 		spinner.setOnItemSelectedListener(this);
+	}
+	
+	private void setUpButton(){
+		TextView textView = (TextView) findViewById(R.id.not_editable_warning);
+		Button button = (Button) findViewById(R.id.add_edit_expenses_button);
+		
 		
 		if (!isClaimEditable()){
-			Button button = (Button) findViewById(R.id.add_edit_expenses_button);
 			button.setClickable(false);
 			textView.setVisibility(View.VISIBLE);
 		} else {
+			button.setClickable(true);
 			textView.setVisibility(View.INVISIBLE);
 		}
-		
 	}
 	
 	private boolean isClaimEditable(){
@@ -127,6 +150,11 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 		claim = cache.getClaim(intent.getExtras().getInt(Constants.PASSEDCLAIM));
 	}
 
-	
+	private void startExpenseListActivity(){
+		Log.d("Verbose", "Starting Expense List");
+		Intent intent = new Intent(this, ExpenseListActivity.class);
+		intent.putExtra(Constants.PASSEDCLAIM, claim.getId());
+		startActivity(intent);
+	}
 
 }

@@ -33,6 +33,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements Observer<Cache>, DataChangedListener<Claim>{ 
 	
 	private ClaimAdapter adapter;
+	private Cache dataCache;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
         setContentView(R.layout.activity_main);
         getActionBar().setDisplayShowHomeEnabled(false);
         
-        Cache dataCache = TravelExpensesApplication.getCache();
+        dataCache = TravelExpensesApplication.getCache();
         dataCache.addView(this);
         
         adapter = new ClaimAdapter(this, R.layout.claim_row_layout, dataCache);
@@ -63,7 +64,7 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
     	switch (item.getItemId()) {
     	   case android.R.id.home:
     	       return true;
-    	   case R.id.add_claim:
+    	   case R.id.add_item:
 			   openAddClaimActivity(null);
 			   return true;
     	    default:
@@ -73,8 +74,13 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
     	return super.onOptionsItemSelected(item);
     }
     
+    @Override
+    protected void onDestroy() {
+    	dataCache.removeView(this);
+    	super.onDestroy();
+    }
     
-    public void openAddClaimActivity(Claim claim) {
+    private void openAddClaimActivity(Claim claim) {
     	Intent intent = new Intent(this, ClaimEditorActivity.class);
     	if (claim != null) intent.putExtra(Constants.PASSEDCLAIM, claim.getId());
 		startActivity(intent);

@@ -42,7 +42,8 @@
         </activity>
         <activity
             android:name=".ExpenseListActivity"
-            android:label="@string/title_activity_expense_list" >
+            android:label="@string/title_activity_expense_list" 
+            android:parentActivityName=".ClaimInfoActivity" >
         </activity>
     </application>
 

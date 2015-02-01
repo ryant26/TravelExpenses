@@ -9,7 +9,7 @@
     tools:context="cmput301.thornhil_travelexpenses.ExpenseListActivity" >
 
     <ListView 
-        android:id="@+id/expense_list_view"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     
@@ -17,6 +17,7 @@
         android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/no_expenses"/>
+        android:text="@string/no_expenses"
+        android:gravity="center"/>
         
 </RelativeLayout>
