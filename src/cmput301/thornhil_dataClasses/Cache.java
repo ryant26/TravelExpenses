@@ -42,8 +42,8 @@ public class Cache
 		writeExpenses();
 	}
 	
-	public Collection<Claim> getAllClaims(){
-		return claims.values();
+	public ArrayList<Claim> getAllClaims(){
+		return new ArrayList<Claim>(claims.values());
 	}
 	
 	public Claim getClaim(Integer id){

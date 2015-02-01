@@ -2,6 +2,9 @@ package cmput301.thornhil_travelexpenses;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import cmput301.thornhil_helpers.*;
 import cmput301.thornhil_dataClasses.Cache;
@@ -116,7 +119,9 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
 		
 		@Override
 		public Claim getItem(int position){
-			return (Claim) cache.getAllClaims().toArray()[position];
+			ArrayList<Claim> list = cache.getAllClaims();
+			Collections.sort(list);
+			return list.get(position);
 		}
 		
 		@Override
@@ -150,7 +155,7 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
 		public void deletePositions(ArrayList<Integer> positions){
 			ArrayList<Claim> toDelete = new ArrayList<Claim>();
 			for (Integer i : positions){
-				toDelete.add(getItem(positions.get(i)));
+				toDelete.add(getItem(i));
 			}
 			for (Claim c : toDelete){
 				cache.deleteClaimNoWrite(c);
