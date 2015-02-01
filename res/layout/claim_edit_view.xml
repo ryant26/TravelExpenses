@@ -23,11 +23,11 @@
         android:textStyle="bold"
         android:textSize="25sp"/>
     
-    <DatePicker
+    <TextView
         android:id="@+id/claimStartDate"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:calendarViewShown="false" />
+        android:layout_height="wrap_content" 
+        android:background="@layout/textview_clicked"/>
     
     <TextView 
         android:layout_width="fill_parent"
@@ -36,10 +36,9 @@
         android:textStyle="bold"
         android:textSize="25sp"/>
 
-    <DatePicker
+    <TextView
         android:id="@+id/claimEndDate"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:calendarViewShown="false" />
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

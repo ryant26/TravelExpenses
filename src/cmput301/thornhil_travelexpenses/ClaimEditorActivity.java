@@ -9,26 +9,32 @@ import cmput301.thornhil_dataClasses.Claim;
 import cmput301.thornhil_helpers.Constants;
 import cmput301.thornhil_helpers.Formatter;
 import android.app.Activity;
-import android.app.Fragment;
+import android.app.FragmentManager.OnBackStackChangedListener;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
-import android.widget.DatePicker;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.content.DialogInterface.OnDismissListener;
 
 
-public class ClaimEditorActivity extends Activity
+public class ClaimEditorActivity extends Activity implements OnDismissListener
 {
 	private Cache cache;
 	private Claim claim;
 	private Boolean newClaim;
 	private EditText claimNameEditor;
-	private DatePicker startDate;
-	private DatePicker endDate;
+	private TextView startDateView;
+	private TextView endDateView;
+	private Date startDateStorage;
+	private Date endDateStorage;
+	
 	private Intent intent;
 	
-	public interface ClaimChangeListener extends DataChangedListener<Claim>{};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +46,29 @@ public class ClaimEditorActivity extends Activity
 		parseIntent();
 		
 		claimNameEditor = (EditText) findViewById(R.id.editClaimName);
-		startDate = (DatePicker) findViewById(R.id.claimStartDate);
-		endDate = (DatePicker) findViewById(R.id.claimEndDate);
+		startDateView = (TextView) findViewById(R.id.claimStartDate);
+		endDateView = (TextView) findViewById(R.id.claimEndDate);
 		
-		Calendar cal = Calendar.getInstance();
 		
 		try{
-			claimNameEditor.setText(claim.getName());
+			startDateStorage = new Date(claim.getDate().getTime());
+			endDateStorage = new Date(claim.getDate().getTime());
 			
-			cal.setTime(claim.getDate());
-			startDate.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-			
-			cal.setTime(claim.getEndDate());
-			endDate.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-			
-		} catch (NullPointerException e){}
+		} catch (NullPointerException e){
+			Calendar cal = Calendar.getInstance();
+			startDateStorage = cal.getTime();
+			endDateStorage = cal.getTime();
+		}
 		
+		setUpView();
+		setUpListeners();
+		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		setUpView();
 	}
 	
 	@Override
@@ -99,22 +112,12 @@ public class ClaimEditorActivity extends Activity
 	}
 	
 	private void getAllFields(){
-		Calendar cal = Calendar.getInstance();
-		Date sDate;
-		Date eDate;
 		
-		cal.set(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth());
-		sDate = cal.getTime();
-		
-		
-		cal.set(endDate.getYear(), endDate.getMonth(), endDate.getDayOfMonth());		
-		eDate = cal.getTime();
-		
-		if (eDate.before(sDate)){
+		if (endDateStorage.before(startDateStorage)){
 			throw new RuntimeException("The End date must be after the Start date");
 		} else {
-			claim.setDate(sDate);
-			claim.setEndDate(eDate);
+			claim.setDate(startDateStorage);
+			claim.setEndDate(endDateStorage);
 		}
 		
 		String name = claimNameEditor.getText().toString();
@@ -142,4 +145,35 @@ public class ClaimEditorActivity extends Activity
 		}
 	}
 	
+	private void setUpView(){
+		claimNameEditor.setText(claim.getName());
+		startDateView.setText(Formatter.formatDate(startDateStorage));
+		endDateView.setText(Formatter.formatDate(endDateStorage));
+	}
+	
+	private void setUpListeners(){
+		
+		
+		startDateView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DatePickerFragment sDatePicker = new DatePickerFragment(startDateStorage);
+				sDatePicker.show(getFragmentManager(), null);
+			}});
+		
+		endDateView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DatePickerFragment eDatePicker = new DatePickerFragment(endDateStorage);
+				eDatePicker.show(getFragmentManager(), null);
+			}
+		});
+	}
+	
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		setUpView();
+	}
 }

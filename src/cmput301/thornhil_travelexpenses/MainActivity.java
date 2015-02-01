@@ -86,7 +86,7 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
 		startActivity(intent);
     }
     
-    private void openClaimInfoActivity(Claim claim){
+    private void openClaimInfoActivity(Claim claim){	
     	Intent intent = new Intent(this, ClaimInfoActivity.class);
     	intent.putExtra(Constants.PASSEDCLAIM, claim.getId());
     	startActivity(intent);
