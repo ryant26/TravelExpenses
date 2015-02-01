@@ -6,6 +6,7 @@ import java.util.Date;
 public class Claim extends DataItem {
 	private ClaimStatus status = ClaimStatus.open;
 	private Date endDate;
+	private String description;
 	
 	public Claim(String name, Date startDate, Date endDate){
 		super(name,	startDate);
@@ -28,6 +29,14 @@ public class Claim extends DataItem {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

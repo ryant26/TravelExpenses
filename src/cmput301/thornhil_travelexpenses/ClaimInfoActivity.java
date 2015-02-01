@@ -37,6 +37,7 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 		intent = getIntent();
 		
 		parseIntent();
+		setUpSpinner();
 		setUpView();
 		
 		Button button = (Button) findViewById(R.id.add_edit_expenses_button);
@@ -100,13 +101,13 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 		TextView claimTitle = (TextView) findViewById(R.id.ClaimTitle);
 		TextView fromDate = (TextView) findViewById(R.id.fromDate);
 		TextView toDate = (TextView) findViewById(R.id.toDate);
+		TextView claimDesc = (TextView) findViewById(R.id.claim_description_textview);
 		
 		claimTitle.setText(claim.getName());
+		claimDesc.setText(claim.getDescription());
 		fromDate.setText(Formatter.formatDate(claim.getDate()));
 		toDate.setText(Formatter.formatDate(claim.getEndDate()));
 		
-		
-		setUpSpinner();
 		setUpButton();
 	}
 	
@@ -116,7 +117,6 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 		
 		
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.Status_Spinner, android.R.layout.simple_spinner_item);
-		spinner.setAdapter(adapter);
 		
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		

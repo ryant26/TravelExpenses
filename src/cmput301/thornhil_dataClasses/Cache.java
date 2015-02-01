@@ -3,7 +3,6 @@ package cmput301.thornhil_dataClasses;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Hashtable;
 
 import android.content.Context;

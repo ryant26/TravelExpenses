@@ -9,8 +9,6 @@ import cmput301.thornhil_dataClasses.Claim;
 import cmput301.thornhil_helpers.Constants;
 import cmput301.thornhil_helpers.Formatter;
 import android.app.Activity;
-import android.app.FragmentManager.OnBackStackChangedListener;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +26,7 @@ public class ClaimEditorActivity extends Activity implements OnDismissListener
 	private Claim claim;
 	private Boolean newClaim;
 	private EditText claimNameEditor;
+	private EditText claimDescriptionEditor;
 	private TextView startDateView;
 	private TextView endDateView;
 	private Date startDateStorage;
@@ -46,6 +45,7 @@ public class ClaimEditorActivity extends Activity implements OnDismissListener
 		parseIntent();
 		
 		claimNameEditor = (EditText) findViewById(R.id.editClaimName);
+		claimDescriptionEditor = (EditText) findViewById(R.id.claim_description);
 		startDateView = (TextView) findViewById(R.id.claimStartDate);
 		endDateView = (TextView) findViewById(R.id.claimEndDate);
 		
@@ -123,7 +123,7 @@ public class ClaimEditorActivity extends Activity implements OnDismissListener
 		String name = claimNameEditor.getText().toString();
 
 		claim.setName(name);
-		
+		claim.setDescription(claimDescriptionEditor.getText().toString());
 		
 	}
 	
@@ -147,6 +147,11 @@ public class ClaimEditorActivity extends Activity implements OnDismissListener
 	
 	private void setUpView(){
 		claimNameEditor.setText(claim.getName());
+		claimDescriptionEditor.setText(claim.getDescription());
+		setUpDates();
+	}
+	
+	private void setUpDates(){
 		startDateView.setText(Formatter.formatDate(startDateStorage));
 		endDateView.setText(Formatter.formatDate(endDateStorage));
 	}
@@ -174,6 +179,6 @@ public class ClaimEditorActivity extends Activity implements OnDismissListener
 	
 	@Override
 	public void onDismiss(DialogInterface dialog) {
-		setUpView();
+		setUpDates();
 	}
 }

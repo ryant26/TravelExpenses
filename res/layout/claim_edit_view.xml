@@ -27,7 +27,8 @@
         android:id="@+id/claimStartDate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
-        android:background="@layout/textview_clicked"/>
+        android:background="@layout/textview_clicked"
+        android:padding="10dip"/>
     
     <TextView 
         android:layout_width="fill_parent"
@@ -39,6 +40,16 @@
     <TextView
         android:id="@+id/claimEndDate"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@layout/textview_clicked"
+        android:padding="10dip"/>
+
+    <EditText
+        android:id="@+id/claim_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine|textCapSentences"
+        android:hint="@string/description_hint"/>
 
 </LinearLayout>
