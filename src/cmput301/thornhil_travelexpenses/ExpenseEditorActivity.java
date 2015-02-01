@@ -109,9 +109,15 @@ public class ExpenseEditorActivity extends Activity {
 		Spinner currency = (Spinner) findViewById(R.id.expense_currency_spinner);
 		Spinner category = (Spinner) findViewById(R.id.expense_category_spinner);
 		
-		category.setAdapter(new ArrayAdapter<ExpenseCategories>(this, android.R.layout.simple_spinner_item, ExpenseCategories.values()));
+		ArrayAdapter<ExpenseCategories> categoryAdapter = new ArrayAdapter<ExpenseCategories>(this, android.R.layout.simple_spinner_item, ExpenseCategories.values());
+		category.setAdapter(categoryAdapter);
+		categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		category.setSelection(categoryAdapter.getPosition(expense.getCategory()));
 		
-		currency.setAdapter(ArrayAdapter.createFromResource(this, R.array.currency_spinner, android.R.layout.simple_spinner_item));
+		ArrayAdapter<CharSequence> currencyAdapter = ArrayAdapter.createFromResource(this, R.array.currency_spinner, android.R.layout.simple_spinner_item);
+		currency.setAdapter(currencyAdapter);
+		currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		 if (!newExpense) currency.setSelection(currencyAdapter.getPosition(expense.getCurrency().toString()));
 		
 	}
 }
