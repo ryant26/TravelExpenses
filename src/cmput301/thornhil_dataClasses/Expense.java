@@ -8,6 +8,8 @@ public class Expense extends DataItem {
 	private Integer claimId;
 	private ExpenseCategories category;
 	
+	public Expense(){}
+	
 	public Expense(String name, Integer amt, Currency currency, Integer claim, Integer id, Date date, ExpenseCategories eCategories){
 		super(name, date);
 		setAmmount(amt);

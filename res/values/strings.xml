@@ -30,5 +30,11 @@
     <string name="title_activity_expense_editor">ExpenseEditorActivity</string>
     <string name="date">Date:</string>
     <string name="category">Category:</string>
+    <string-array name="currency_spinner">
+        <item >CAD</item>
+        <item >USD</item>
+        <item >EUR</item>
+        <item >GBP</item>
+    </string-array>
 
 </resources>

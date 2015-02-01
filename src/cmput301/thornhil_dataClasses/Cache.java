@@ -9,6 +9,7 @@ import android.content.Context;
 import android.util.Log;
 import cmput301.thornhil_helpers.Observer;
 import cmput301.thornhil_helpers.StorageAdapter;
+import cmput301.thornhil_travelexpenses.ExpenseListActivity;
 
 
 public class Cache
@@ -47,6 +48,10 @@ public class Cache
 	
 	public Claim getClaim(Integer id){
 		return claims.get(id);
+	}
+	
+	public Expense getExpense(Integer id){
+		return expenses.get(id);
 	}
 	
 	public ArrayList<Expense> getAllExpenses(){

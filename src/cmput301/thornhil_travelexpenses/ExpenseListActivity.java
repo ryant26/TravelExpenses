@@ -57,7 +57,7 @@ public class ExpenseListActivity extends ListActivity implements Observer<Cache>
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.add_item) {
-			//TODO make intent to start expense editor
+			startExpenseEditor(null);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -98,6 +98,11 @@ public class ExpenseListActivity extends ListActivity implements Observer<Cache>
 		}
 	}
 
+	private void startExpenseEditor(Expense expense){
+		Intent intent = new Intent(this, ExpenseEditorActivity.class);
+		if (expense != null) intent.putExtra(Constants.PASSEDEXPENSE, expense.getId());
+		startActivity(intent);
+	}
 	
 	private class ExpenseAdapter extends BaseAdapter{
 		

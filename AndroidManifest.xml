@@ -47,7 +47,8 @@
         </activity>
         <activity
             android:name=".ExpenseEditorActivity"
-            android:label="@string/title_activity_expense_editor" >
+            android:label="@string/title_activity_expense_editor" 
+            android:parentActivityName=".ExpenseListActivity">
         </activity>
     </application>
 
