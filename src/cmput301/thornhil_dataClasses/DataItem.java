@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 
-public class DataItem {
+public class DataItem implements Comparable<DataItem>{
 	private String name;
 	private Integer id;
 	private Date date;
@@ -48,5 +48,9 @@ public class DataItem {
 		this.date = date;
 	}
 	
+	@Override
+	public int compareTo(DataItem another) {
+		return getDate().compareTo(another.getDate());
+	}
 	
 }

@@ -3,7 +3,7 @@ package cmput301.thornhil_dataClasses;
 import java.util.Date;
 
 
-public class Claim extends DataItem implements Comparable<DataItem>{
+public class Claim extends DataItem {
 	private ClaimStatus status = ClaimStatus.open;
 	private Date endDate;
 	
@@ -30,8 +30,4 @@ public class Claim extends DataItem implements Comparable<DataItem>{
 		this.endDate = endDate;
 	}
 
-	@Override
-	public int compareTo(DataItem another) {
-		return getDate().compareTo(another.getDate());
-	}
 }
