@@ -27,5 +27,8 @@
     <string name="action_settings">Settings</string>
     <string name="no_expenses">Please use the &quot;+&quot; button to add a new Expense for this claim</string>
     <string name="description_hint">Description</string>
+    <string name="title_activity_expense_editor">ExpenseEditorActivity</string>
+    <string name="date">Date:</string>
+    <string name="category">Category:</string>
 
 </resources>
