@@ -4,29 +4,35 @@ import java.util.Calendar;
 import java.util.Date;
 
 import cmput301.thornhil_dataClasses.Cache;
+import cmput301.thornhil_dataClasses.Claim;
 import cmput301.thornhil_dataClasses.Expense;
 import cmput301.thornhil_dataClasses.ExpenseCategories;
 import cmput301.thornhil_helpers.Constants;
 import cmput301.thornhil_helpers.Formatter;
 import android.R.anim;
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class ExpenseEditorActivity extends Activity {
+public class ExpenseEditorActivity extends Activity implements OnDismissListener{
 	
 	private Cache cache;
 	private Expense expense;
 	private Boolean newExpense;
 	private Intent intent;
 	private Date storageDate;
+	private Claim parentClaim;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class ExpenseEditorActivity extends Activity {
 		
 		setUpView();
 		setUpSpinners();
+		setUpListeners();
 	}
 
 	@Override
@@ -70,6 +77,7 @@ public class ExpenseEditorActivity extends Activity {
 	
 	private void parseIntent(){
 		try{
+			parentClaim = cache.getClaim(intent.getExtras().getInt(Constants.PASSEDCLAIM));
 			expense = cache.getExpense(intent.getExtras().getInt(Constants.PASSEDEXPENSE));
 		} catch (NullPointerException e){
 			Log.d("verbose", "No expense passed in intent");
@@ -119,5 +127,23 @@ public class ExpenseEditorActivity extends Activity {
 		currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		 if (!newExpense) currency.setSelection(currencyAdapter.getPosition(expense.getCurrency().toString()));
 		
+	}
+	
+	private void setUpListeners(){
+		TextView date = (TextView) findViewById(R.id.expense_date_textView);
+		date.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DatePickerFragment datePicker = new DatePickerFragment(storageDate);
+				datePicker.show(getFragmentManager(), null);
+				
+			}
+		});
+	}
+
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		setUpDate();
 	}
 }

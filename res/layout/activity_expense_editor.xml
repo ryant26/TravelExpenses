@@ -29,7 +29,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" 
         android:background="@layout/textview_clicked"
-        android:padding="10dip"/>
+        android:padding="10dip" />
     
     <TextView 
         android:layout_width="fill_parent"
