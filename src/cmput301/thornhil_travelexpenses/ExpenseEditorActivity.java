@@ -70,18 +70,19 @@ public class ExpenseEditorActivity extends Activity implements OnDismissListener
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.save_claim) {
-			getAllFields();
-			if (newExpense){
-				try {
+			try {
+				getAllFields();
+				if (newExpense){
 					cache.addNewExpense(expense);
-				} catch (IOException e) {
-					e.printStackTrace();
-					Log.d("Error", "error saving new expense");
+				} else {
+					cache.notifyDataChanged();
 				}
-			} else {
-				cache.notifyDataChanged();
+				finish();
+			} catch (IOException e){
+				Log.d("Error", "Could not save expense");
+			} catch (RuntimeException e){
+				Formatter.showToast(this, "Date must be within claim range");
 			}
-			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -160,12 +161,21 @@ public class ExpenseEditorActivity extends Activity implements OnDismissListener
 		Spinner currency = (Spinner) findViewById(R.id.expense_currency_spinner);
 		EditText amt = (EditText) findViewById(R.id.edit_expense_total);
 		
+		if (storageDate.before(parentClaim.getDate()) || storageDate.after(parentClaim.getEndDate())){
+			throw new RuntimeException("Invalid date!");
+		}
+		
 		expense.setDate(storageDate);
 		expense.setName(desc.getText().toString());
 		expense.setCategory(ExpenseCategories.fromString(category.getSelectedItem().toString()));
 		expense.setCurrency(Currency.getInstance(currency.getSelectedItem().toString()));
 		expense.setClaimId(parentClaim.getId());
-		expense.setAmmount(Float.parseFloat(amt.getText().toString()));
+		try{
+			expense.setAmmount(Float.parseFloat(amt.getText().toString()));
+		} catch (RuntimeException e){
+			expense.setAmmount(0.00f);
+		}
+		
 	}
 
 	@Override
