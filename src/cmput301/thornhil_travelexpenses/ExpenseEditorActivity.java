@@ -180,9 +180,6 @@ public class ExpenseEditorActivity extends Activity implements OnDismissListener
 		Spinner currency = (Spinner) findViewById(R.id.expense_currency_spinner);
 		EditText amt = (EditText) findViewById(R.id.edit_expense_total);
 		
-//		if (storageDate.before(parentClaim.getDate()) || storageDate.after(parentClaim.getEndDate())){
-//			throw new RuntimeException("Invalid date!");
-//		}
 		
 		expense.setDate(storageDate);
 		expense.setName(desc.getText().toString());
