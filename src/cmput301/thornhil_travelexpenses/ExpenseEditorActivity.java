@@ -88,6 +88,14 @@ public class ExpenseEditorActivity extends Activity implements OnDismissListener
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	public Intent getParentActivityIntent() {
+		super.getParentActivityIntent();
+		Intent intent = new Intent(getApplicationContext(), ExpenseListActivity.class);
+		intent.putExtra(Constants.PASSEDCLAIM, parentClaim.getId());
+		return intent;
+	}
+	
 	private void parseIntent(){
 		try{
 			parentClaim = cache.getClaim(intent.getExtras().getInt(Constants.PASSEDCLAIM));

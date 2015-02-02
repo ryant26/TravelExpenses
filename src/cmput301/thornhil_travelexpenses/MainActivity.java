@@ -132,12 +132,15 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
     			body.append("\n" + e.toEmailString());
     		}
     		try{
+    			body.append("\nTotal: \n");
 	    		for (String s : Formatter.getTotals(dataCache.getExpensesForClaim(c))){
-	    			body.append(s + "\n\n");
+	    			body.append(s + "\n");
 	    		}
+    			body.append("\n");
     		} catch (RuntimeException e){
     			body.append("Total: 0\n\n");
     		}
+    		body.append("\n\n");
     	}
     	
     	// This code retrieved from SO http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application

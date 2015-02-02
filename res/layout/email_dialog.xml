@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send To:"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+    
     <EditText 
         android:id="@+id/edit_email"
         android:inputType="textWebEmailAddress"
