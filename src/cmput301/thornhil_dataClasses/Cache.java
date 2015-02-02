@@ -110,6 +110,11 @@ public class Cache
 	}
 	
 	public void notifyDataChanged(){
+		try{
+			writeAllData();
+		} catch (IOException e){
+			Log.d("error", "error writing all data");
+		}
 		updateViews();
 	}
 	
@@ -123,10 +128,10 @@ public class Cache
 		}
 	}
 	
-	private ArrayList<Expense> getExpensesForClaim(Claim claim){
+	public ArrayList<Expense> getExpensesForClaim(Claim claim){
 		ArrayList<Expense> out = new ArrayList<Expense>();
 		for (Expense e : getAllExpenses()){
-			if (e.getClaimId() == claim.getId()){
+			if (e.getClaimId().equals(claim.getId())){
 				out.add(e);
 			}
 		}

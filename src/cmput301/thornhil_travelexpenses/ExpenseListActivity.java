@@ -101,6 +101,7 @@ public class ExpenseListActivity extends ListActivity implements Observer<Cache>
 	private void startExpenseEditor(Expense expense){
 		Intent intent = new Intent(this, ExpenseEditorActivity.class);
 		if (expense != null) intent.putExtra(Constants.PASSEDEXPENSE, expense.getId());
+		intent.putExtra(Constants.PASSEDCLAIM, claim.getId());
 		startActivity(intent);
 	}
 	
@@ -116,12 +117,12 @@ public class ExpenseListActivity extends ListActivity implements Observer<Cache>
 		
 		@Override
 		public int getCount() {
-			return cache.getAllExpenses().size();
+			return cache.getExpensesForClaim(claim).size();
 		}
 
 		@Override
 		public Expense getItem(int position) {
-			ArrayList<Expense> list = cache.getAllExpenses();
+			ArrayList<Expense> list = cache.getExpensesForClaim(claim);
 			Collections.sort(list);
 			return list.get(position);
 		}

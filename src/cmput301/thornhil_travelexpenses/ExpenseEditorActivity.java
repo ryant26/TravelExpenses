@@ -1,6 +1,8 @@
 package cmput301.thornhil_travelexpenses;
 
+import java.io.IOException;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
 
 import cmput301.thornhil_dataClasses.Cache;
@@ -9,7 +11,6 @@ import cmput301.thornhil_dataClasses.Expense;
 import cmput301.thornhil_dataClasses.ExpenseCategories;
 import cmput301.thornhil_helpers.Constants;
 import cmput301.thornhil_helpers.Formatter;
-import android.R.anim;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -69,7 +70,18 @@ public class ExpenseEditorActivity extends Activity implements OnDismissListener
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.save_claim) {
-			//TODO save the state of all inputs
+			getAllFields();
+			if (newExpense){
+				try {
+					cache.addNewExpense(expense);
+				} catch (IOException e) {
+					e.printStackTrace();
+					Log.d("Error", "error saving new expense");
+				}
+			} else {
+				cache.notifyDataChanged();
+			}
+			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -140,6 +152,20 @@ public class ExpenseEditorActivity extends Activity implements OnDismissListener
 				
 			}
 		});
+	}
+	
+	private void getAllFields(){
+		EditText desc = (EditText) findViewById(R.id.edit_expense_desc);
+		Spinner category = (Spinner) findViewById(R.id.expense_category_spinner);
+		Spinner currency = (Spinner) findViewById(R.id.expense_currency_spinner);
+		EditText amt = (EditText) findViewById(R.id.edit_expense_total);
+		
+		expense.setDate(storageDate);
+		expense.setName(desc.getText().toString());
+		expense.setCategory(ExpenseCategories.fromString(category.getSelectedItem().toString()));
+		expense.setCurrency(Currency.getInstance(currency.getSelectedItem().toString()));
+		expense.setClaimId(parentClaim.getId());
+		expense.setAmmount(Float.parseFloat(amt.getText().toString()));
 	}
 
 	@Override

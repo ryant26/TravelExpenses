@@ -3,14 +3,14 @@ package cmput301.thornhil_dataClasses;
 import java.util.*;
 
 public class Expense extends DataItem {
-	private Integer ammount;
+	private Float ammount;
 	private Currency currency;
 	private Integer claimId;
 	private ExpenseCategories category;
 	
 	public Expense(){}
 	
-	public Expense(String name, Integer amt, Currency currency, Integer claim, Integer id, Date date, ExpenseCategories eCategories){
+	public Expense(String name, Float amt, Currency currency, Integer claim, Integer id, Date date, ExpenseCategories eCategories){
 		super(name, date);
 		setAmmount(amt);
 		setCurrency(currency);
@@ -18,10 +18,10 @@ public class Expense extends DataItem {
 		setCategory(eCategories);
 	}
 	
-	public Integer getAmmount() {
+	public Float getAmmount() {
 		return ammount;
 	}
-	public void setAmmount(Integer ammount) {
+	public void setAmmount(Float ammount) {
 		this.ammount = ammount;
 	}
 	public Currency getCurrency() {

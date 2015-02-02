@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textCapSentences" 
-        android:hint="@string/claim_name"/>
+        android:hint="@string/description_hint"/>
     
     <TextView 
         android:layout_width="fill_parent"
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="numberDecimal" 
-        android:hint="@string/claim_name"/>
+        android:hint="@string/total"/>
         
         <Spinner
 		    android:id="@+id/expense_currency_spinner"
