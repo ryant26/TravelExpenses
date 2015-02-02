@@ -52,7 +52,7 @@ public class ClaimEditorActivity extends Activity implements OnDismissListener
 		
 		try{
 			startDateStorage = new Date(claim.getDate().getTime());
-			endDateStorage = new Date(claim.getDate().getTime());
+			endDateStorage = new Date(claim.getEndDate().getTime());
 			
 		} catch (NullPointerException e){
 			Calendar cal = Calendar.getInstance();
