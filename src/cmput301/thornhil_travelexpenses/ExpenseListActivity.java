@@ -1,13 +1,16 @@
 package cmput301.thornhil_travelexpenses;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
+import cmput301.thornhil_dataClasses.DataItem;
 import cmput301.thornhil_dataClasses.Expense;
 import cmput301.thornhil_helpers.Constants;
 import cmput301.thornhil_helpers.Formatter;
+import cmput301.thornhil_helpers.MultiSelectListener;
 import cmput301.thornhil_helpers.Observer;
 import android.app.ListActivity;
 import android.content.Context;
@@ -23,7 +26,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ExpenseListActivity extends ListActivity implements Observer<Cache> {
+public class ExpenseListActivity extends ListActivity implements Observer<Cache>, DataChangedListener<DataItem> {
 
 	private Cache cache; 
 	private Claim claim;
@@ -41,6 +44,8 @@ public class ExpenseListActivity extends ListActivity implements Observer<Cache>
 		
 		adapter = new ExpenseAdapter(cache, this);
 		setListAdapter(adapter);
+		getListView().setMultiChoiceModeListener(new MultiSelectListener<DataItem>(this));
+		getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 	}
 
 	@Override
@@ -155,6 +160,39 @@ public class ExpenseListActivity extends ListActivity implements Observer<Cache>
 			((TextView) rowView.findViewById(R.id.expense_total)).setText(item.getAmmount().toString() + " " + item.getCurrency().toString());
 			return rowView;
 		}
+		
+		public void deletePositions(ArrayList<Integer> positions){
+			ArrayList<Expense> toDelete = new ArrayList<Expense>();
+			for (Integer i: positions){
+				toDelete.add(getItem(i));
+			}
+			for (Expense e : toDelete){
+				try {
+					cache.deleteExpense(e.getId());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public void dataItemChanged(DataItem item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dataItemCreated(DataItem item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dataItemsDeleted(ArrayList<Integer> itemPositions) {
+		adapter.deletePositions(itemPositions);
 		
 	}
 }
