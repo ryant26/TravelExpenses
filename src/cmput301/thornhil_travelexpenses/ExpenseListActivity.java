@@ -179,13 +179,13 @@ public class ExpenseListActivity extends ListActivity implements Observer<Cache>
 	}
 
 	@Override
-	public void dataItemChanged(DataItem item) {
+	public void dataItemChanged(ArrayList<Integer> item) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void dataItemCreated(DataItem item) {
+	public void dataItemCreated(ArrayList<Integer> item) {
 		// TODO Auto-generated method stub
 		
 	}

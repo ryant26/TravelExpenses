@@ -14,14 +14,20 @@ public class MultiSelectListener <T extends DataItem> implements MultiChoiceMode
 
 	private DataChangedListener<T> listener;
 	ArrayList<Integer> selectedItems = new ArrayList<Integer>();
+	int menu;
 	
 	public MultiSelectListener(DataChangedListener<T> listener) {
+		this(listener, R.menu.multi_select_menu);
+	}
+	
+	public MultiSelectListener(DataChangedListener<T> listener, int menu) {
+		this.menu = menu;
 		this.listener = listener;
 	}
 	
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-		mode.getMenuInflater().inflate(R.menu.multi_select_menu, menu);
+		mode.getMenuInflater().inflate(this.menu, menu);
 		return true;
 	}
 
@@ -38,7 +44,9 @@ public class MultiSelectListener <T extends DataItem> implements MultiChoiceMode
 			listener.dataItemsDeleted(selectedItems);
 			mode.finish();
 			break;
-
+		case R.id.email_item_main:
+			listener.dataItemChanged(selectedItems);
+			break;
 		default:
 			break;
 		}

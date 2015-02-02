@@ -2,6 +2,9 @@ package cmput301.thornhil_dataClasses;
 
 import java.util.Date;
 
+import cmput301.thornhil_helpers.Formatter;
+
+
 
 public class Claim extends DataItem {
 	private ClaimStatus status = ClaimStatus.open;
@@ -37,6 +40,13 @@ public class Claim extends DataItem {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public String toEmailString(){
+		 return "Claim: " + getName() + "\n" +
+				 "Description: " + getDescription() + "\n" +
+				 "Start Date: " + Formatter.formatDate(getDate()) + "\n" +
+				 "End Date: " + Formatter.formatDate(getEndDate()) + "\n";
 	}
 
 }

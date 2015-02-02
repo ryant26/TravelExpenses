@@ -7,6 +7,7 @@ import java.util.Collections;
 import cmput301.thornhil_helpers.*;
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
+import cmput301.thornhil_dataClasses.Expense;
 import cmput301.thornhil_helpers.Constants;
 import cmput301.thornhil_helpers.Formatter;
 import cmput301.thornhil_helpers.MultiSelectListener;
@@ -26,12 +27,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity implements Observer<Cache>, DataChangedListener<Claim>{ 
 	
 	private ClaimAdapter adapter;
 	private Cache dataCache;
+	private String emailAddress;
+	ArrayList<Claim> claimsToEmail;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +106,51 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
 			
 		});
 		
-		listView.setMultiChoiceModeListener(new MultiSelectListener<Claim>(this));
+		listView.setMultiChoiceModeListener(new MultiSelectListener<Claim>(this, R.menu.main_and_email));
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);		
+    }
+    
+    private void sendEmail(ArrayList<Claim> claims){
+    	claimsToEmail = claims;
+    	EmailSelectDialog emailDiag = new EmailSelectDialog(new Observer<String>() {
+			
+			@Override
+			public void update(String model) {
+				emailAddress = model;
+				buildAndSendEmail(claimsToEmail);
+			}
+		});
+    	
+    	emailDiag.show(getFragmentManager(), null);
+    }
+    
+    private void buildAndSendEmail(ArrayList<Claim> claims){
+    	StringBuilder body = new StringBuilder();
+    	for (Claim c : claims){
+    		body.append(c.toEmailString() + "\n");
+    		for (Expense e : dataCache.getExpensesForClaim(c)){
+    			body.append("\n" + e.toEmailString());
+    		}
+    		try{
+	    		for (String s : Formatter.getTotals(dataCache.getExpensesForClaim(c))){
+	    			body.append(s + "\n\n");
+	    		}
+    		} catch (RuntimeException e){
+    			body.append("Total: 0\n\n");
+    		}
+    	}
+    	
+    	// This code retrieved from SO http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application
+    	Intent intent = new Intent(Intent.ACTION_SEND);
+    	intent.setType("message/rfc822");
+    	intent.putExtra(Intent.EXTRA_EMAIL  , new String[]{emailAddress});
+    	intent.putExtra(Intent.EXTRA_SUBJECT, "Claim sent from thornhil-TravelExpenses");
+    	intent.putExtra(Intent.EXTRA_TEXT   , body.toString());
+    	try {
+    	    startActivity(Intent.createChooser(intent, "Send mail..."));
+    	} catch (android.content.ActivityNotFoundException ex) {
+    	    Formatter.showToast(this, "No email clients installed");
+    	}
     }
     
     private class ClaimAdapter extends BaseAdapter{
@@ -194,12 +241,16 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
 	}
 
 	@Override
-	public void dataItemChanged(Claim item) {
-		
+	public void dataItemChanged(ArrayList<Integer> item) {
+		ArrayList<Claim> out = new ArrayList<Claim>();
+		for (Integer i : item){
+			out.add(adapter.getItem(i));
+		}
+		sendEmail(out);
 	}
 
 	@Override
-	public void dataItemCreated(Claim item) {
+	public void dataItemCreated(ArrayList<Integer> item) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -209,5 +260,5 @@ public class MainActivity extends Activity implements Observer<Cache>, DataChang
 		adapter.deletePositions(itemPositions);
 		
 	}
-
+	
 }

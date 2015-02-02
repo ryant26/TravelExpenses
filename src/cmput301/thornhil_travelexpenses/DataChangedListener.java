@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 public interface DataChangedListener <T>{
-	public void dataItemChanged(T item);
-	public void dataItemCreated(T item);
+	public void dataItemChanged(ArrayList<Integer> item);
+	public void dataItemCreated(ArrayList<Integer> item);
 	public void dataItemsDeleted(ArrayList<Integer> itemPositions);
 }

@@ -45,4 +45,10 @@ public class Expense extends DataItem {
 		this.category = category;
 	}
 	
+	public String toEmailString(){
+		return "Expense\n" + 
+				"Description: " + getName() +"\n" +
+				"Cost: " + getAmmount().toString() + getCurrency().toString() + "\n";
+	}
+	
 }
