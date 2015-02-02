@@ -2,6 +2,9 @@
 ## Preface
 This is **NOT** the system documentation. Please see the doc directory for the Readme deliverable, and other design documents!
 
+##Video Demo
+https://archive.org/details/ThornhilTravelExpensesFinal
+
 ## Cmput 301 Assignment 1
 
 This is a simple android app that can be used to track travel expenses.
