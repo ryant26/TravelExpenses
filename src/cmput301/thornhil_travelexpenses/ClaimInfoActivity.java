@@ -1,8 +1,12 @@
 package cmput301.thornhil_travelexpenses;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
+
 import cmput301.thornhil_dataClasses.Cache;
 import cmput301.thornhil_dataClasses.Claim;
 import cmput301.thornhil_dataClasses.ClaimStatus;
+import cmput301.thornhil_dataClasses.Expense;
 import cmput301.thornhil_helpers.Constants;
 import cmput301.thornhil_helpers.Formatter;
 import cmput301.thornhil_helpers.Observer;
@@ -18,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -27,6 +32,7 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 	private Cache cache;
 	private Claim claim;
 	private Intent intent;
+	private ArrayList<View> addedView = new ArrayList<View>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +115,7 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 		toDate.setText(Formatter.formatDate(claim.getEndDate()));
 		
 		setUpButton();
+		setUpTotal();
 	}
 	
 	private void setUpSpinner(){
@@ -137,6 +144,45 @@ public class ClaimInfoActivity extends Activity implements OnItemSelectedListene
 			button.setClickable(true);
 			textView.setVisibility(View.INVISIBLE);
 		}
+	}
+	
+	private void setUpTotal(){
+		clearTotals();
+		Hashtable<String, Float> totals = new Hashtable<String, Float>();
+		for (Expense e : cache.getExpensesForClaim(claim)){
+			String key = e.getCurrency().toString();
+			Float newAmt = e.getAmmount();
+			if (totals.containsKey(key)){
+				Float amt = totals.get(key);
+				amt += newAmt;
+				totals.remove(key);
+				totals.put(key, amt);
+			} else {
+				totals.put(key, newAmt);
+			}
+		}
+		
+		LinearLayout parent = (LinearLayout) findViewById(R.id.claim_info_left_linlayout);
+		for (String key : totals.keySet()){
+			Float amt = totals.get(key);
+			View newView = getTotalView(amt, key);
+			parent.addView(newView);
+			addedView.add(newView);
+		}
+	}
+	
+	private TextView getTotalView(Float amt, String currencyCode){
+		TextView out = new TextView(this);
+		out.setText(amt.toString() + " " + currencyCode);
+		return out;
+	}
+	
+	private void clearTotals(){
+		LinearLayout parent = (LinearLayout) findViewById(R.id.claim_info_left_linlayout);
+		for(View v : addedView){
+			parent.removeView(v);
+		}
+		addedView = new ArrayList<View>();
 	}
 	
 	private boolean isClaimEditable(){

@@ -66,7 +66,7 @@ public class ExpenseListActivity extends ListActivity implements Observer<Cache>
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
-		Log.d("verbose", "Clicked Expense");
+		startExpenseEditor(adapter.getItem(position));
 		super.onListItemClick(l, v, position, id);
 	}
 	
@@ -152,7 +152,7 @@ public class ExpenseListActivity extends ListActivity implements Observer<Cache>
 			((TextView) rowView.findViewById(R.id.expense_category)).setText(item.getCategory().toString());
 			((TextView) rowView.findViewById(R.id.expense_date)).setText(Formatter.formatDate(item.getDate()));
 			
-			((TextView) rowView.findViewById(R.id.expense_total)).setText(item.getAmmount().toString() + item.getCurrency().toString());
+			((TextView) rowView.findViewById(R.id.expense_total)).setText(item.getAmmount().toString() + " " + item.getCurrency().toString());
 			return rowView;
 		}
 		
