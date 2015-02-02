@@ -1,4 +1,4 @@
-# TravelExpenses\
+# TravelExpenses
 ## Preface
 This is **NOT** the system documentation. Please see the doc directory for the Readme deliverable, and other design documents!
 
